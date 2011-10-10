@@ -1,5 +1,5 @@
 #linux source directory
-SOURCE_DIR:=/home/sree-virt/dev_mmap/linux/
+SOURCE_DIR:=../..//linux-2.6.38.8
 
 obj-m += shm_ko.o
 

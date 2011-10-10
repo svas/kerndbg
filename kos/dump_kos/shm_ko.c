@@ -23,163 +23,110 @@
 #include <linux/device.h>
 #include <linux/major.h>
 #include <linux/cdev.h>
+#include <linux/list.h>
+#include <linux/mman.h>
 
+#include "./shm_ko.h"
 /* #include <asm/unistd.h> */
-
 
 MODULE_LICENSE("GPL");
 
-#define DEV_MMAP_MINOR 15
-#define DEV_MMAP_MAJOR 16
+#define DEV_SHM_LOCK_MAJOR 15
+#define DEV_SHM_LOCK_MINOR 16
 
 #define DUMP_STACK() { extern void dump_stack(); dump_stack();}
 
-static struct class *mem_class;
+static spinlock_t sm_ds_lock;
 
-char *skbuff_user;
+static struct class *shm_lock_class;
 
-/* This is just a random max size, need to figure out the correct size */
-#define MAX_SKU_SIZE (4096)
-
-char *sku_data;
-
-#if 0
-void __you_cannot_kmalloc_that_much()
-{
-}
-#endif
+static LIST_HEAD(sm_ds_list);
 
 static int open_mem(struct inode * inode, struct file * filp)
 {
     return capable(CAP_SYS_RAWIO) ? 0 : -EPERM;
 }
 
-static int skbuff_user_mmap (struct file * file, struct vm_area_struct * vma);
-static const struct file_operations skbuff_user_fops = {
-    .mmap       = skbuff_user_mmap,
-    .open       = open_mem,
-};
 
-static const struct vm_operations_struct mmap_mem_ops = {
-#ifdef CONFIG_HAVE_IOREMAP_PROT
-    .access = NULL
-#endif
-};
-
-#ifndef CONFIG_MMU
-static unsigned long get_unmapped_area_mem(struct file *file,
-                                           unsigned long addr,
-                                           unsigned long len,
-                                           unsigned long pgoff,
-                                           unsigned long flags)
-{
-    if (!valid_mmap_phys_addr_range(pgoff, len))
-        return (unsigned long) -EINVAL;
-    return pgoff << PAGE_SHIFT;
-}
-
-/* can't do an in-place private mapping if there's no MMU */
-static inline int private_mapping_ok(struct vm_area_struct *vma)
-{
-    return vma->vm_flags & VM_MAYSHARE;
-}
-#else
-#define get_unmapped_area_mem	NULL
-
-static inline int private_mapping_ok(struct vm_area_struct *vma)
-{
-    return 1;
-}
-#endif
-
-static int memory_open(struct inode *inode, struct file *filp)
+static int shm_lock_open(struct inode *inode, struct file *filp)
 {
     int minor;
     const struct memdev *dev;
 
     DUMP_STACK();
 
-    filp->f_op = &skbuff_user_fops;
-    filp->f_mapping->backing_dev_info = &directly_mappable_cdev_bdi;
-    filp->f_mode |= FMODE_UNSIGNED_OFFSET;
-
     return open_mem(inode, filp);
 }
 
-static int skbuff_user_mmap (struct file * file, struct vm_area_struct * vma)
+static int shm_reg(void *arg)
 {
-	int i, ret = 0;
-	struct page *pg;
-	size_t size = vma->vm_end - vma->vm_start;
-	unsigned long pfn;
+    int ret = 0;
+    key_t key;
+    sm_ds *smds = NULL;
+    shm_reg_t shm_reg;
 
-    DUMP_STACK();
+    copy_from_user(&shm_reg, arg, sizeof(shm_reg_t));
 
-	if (!skbuff_user)
-		skbuff_user = kmalloc (MAX_SKU_SIZE, GFP_KERNEL);
-	if (!sku_data)
-		sku_data   = kmalloc (MAX_SKU_SIZE, GFP_KERNEL | GFP_ATOMIC);
+    /* Acquire lock to access sm_ds */
+    spin_lock(&sm_ds_lock);
 
-	if (!skbuff_user || !sku_data) {
-		printk (KERN_INFO "mith: vmalloc failure for skbuf_user\n");
-		ret = -ENOMEM;
-		goto out;
-	}
+    /* Check if an try with the key is present */
+    smds = get_smds(key);
 
-	vma->vm_page_prot = PAGE_SHARED;
-	/* Get the physical address from the kernel virtual address and use PAGE_SHIFT to get the PFN */
-	pfn = __pa((u32) skbuff_user) >> PAGE_SHIFT;
+    if (!smds) {
+        ret = list_add_smds(shm_reg.key);
+        if (ret != 0)
+            goto errout;
+    }
 
-	vma->vm_flags |= VM_IO | VM_USERMAP | VM_RESERVED | VM_WRITE;
+    /* Entry is present */
+    /* check if its already locked */
+    if (smds) {
+        /* Check if the shared memory is already locked.
+         * If yes, then make the whole shared memory RO */
+        if (smds -> lock == LOCKED) {
+            /* Lock the whole shared memory */
+            /* TODO */
+        }
+        ret = list_add_tident(smds);
+    }
 
-	printk (KERN_INFO "mith: pfn = 0x%lx skbuff_user = 0x%lx phy_addr = 0x%lx\n", pfn, (unsigned long) skbuff_user, __pa((u32) skbuff_user));
-    printk (KERN_INFO "mith: VMA size = %d, start = 0x%x\n", size, vma->vm_start);
-
-#if 0
-	if (wich_receive_addr != ~0) {
-		vma->vm_pgoff = wich_receive_addr >> PAGE_SHIFT;
-		printk (KERN_INFO "mith: In skbuff_user_mmap: recv addr = 0x%lx\n", wich_receive_addr);
-	}
-#endif
-	if (!private_mapping_ok (vma)) {
-		ret = -ENOSYS;
-		goto out;
-	}
-
-	vma->vm_ops = &mmap_mem_ops;
-	vma->vm_pgoff = pfn;
-
-	/* vma is figured out by the caller of this function which is sys_mmap ().
-	   Given the current task`s page table info, a virtually contiguous area is figured out
-           by the find_vma () function and is passed onto us. We only need to map these
-           virtual addresses to actual physical pages.
-	*/
-	if (remap_pfn_range (vma, vma->vm_start, pfn, size, vma->vm_page_prot)) {
-		//unmap_devmem(pfn, size, vma->vm_page_prot);
-		ret = -EAGAIN;
-		goto out;
-	}
-#if 0
-	for (i = 0; i < 4096; i += 4) {
-		printk (KERN_INFO "%d ", *(unsigned int *) (__va((u32) wich_receive_addr) + i));
-	}
-#endif
-	for (i = 0; i < 4096; i += 4) {
-		//printk (KERN_INFO "%d ", *(unsigned int *) (__va((u64) skbuff_user) + i));
-		*(unsigned int *) ((u32) skbuff_user + i) = 0xfeedface;
-	}
-out:
-	if (ret < 0) {
-		if (skbuff_user)
-			kfree (skbuff_user);
-		if (sku_data)
-			kfree (sku_data);
-	}
-	return ret;
+errout:
+        spin_unlock(&sm_ds_lock);
+    return ret;
 }
 
-static const struct file_operations memory_fops = {
-    .open = memory_open,
+static int shm_lock(void *arg)
+{
+
+    return 0;
+}
+
+static int shm_unlock(void *arg)
+{
+
+    return 0;
+}
+
+static long shm_lock_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+    DUMP_STACK();
+    switch(cmd) {
+    case IOCTL_REG:
+        return shm_reg(arg);
+    case IOCTL_LOCK:
+        return shm_lock(arg);
+    case IOCTL_UNLOCK:
+        return shm_unlock(arg);
+    default:
+        return -EINVAL;
+    }
+    return 1;
+}
+
+static const struct file_operations shm_lock_fops = {
+    .open = shm_lock_open,
+    .unlocked_ioctl = shm_lock_ioctl,
     .llseek = noop_llseek,
 };
 
@@ -190,33 +137,214 @@ static char *mem_devnode(struct device *dev, mode_t *mode)
 	return NULL;
 }
 
-static int __init dev_mmap_init(void)
+static int __init dev_shm_lock_init(void)
 {
 	int minor;
 	int err;
 
 
-	if (register_chrdev(DEV_MMAP_MAJOR, "mem2", &memory_fops))
-		printk("unable to get major %d for memory devs\n", DEV_MMAP_MAJOR);
+	if (register_chrdev(DEV_SHM_LOCK_MAJOR, "slock", &shm_lock_fops))
+		printk("unable to get major %d for memory devs\n", DEV_SHM_LOCK_MAJOR);
 
-	mem_class = class_create(THIS_MODULE, "mem2");
-	if (IS_ERR(mem_class))
-		return PTR_ERR(mem_class);
+	shm_lock_class = class_create(THIS_MODULE, "slock");
+	if (IS_ERR(shm_lock_class))
+		return PTR_ERR(shm_lock_class);
 
-	mem_class->devnode = mem_devnode;
-	if (!device_create(mem_class, NULL, MKDEV(DEV_MMAP_MAJOR, DEV_MMAP_MINOR),
-                       NULL, "skbuff_user1")) {
-        printk(KERN_INFO "Error in dev_mmap class create");
+	shm_lock_class->devnode = mem_devnode;
+	if (!device_create(shm_lock_class, NULL, MKDEV(DEV_SHM_LOCK_MAJOR, DEV_SHM_LOCK_MINOR),
+                       NULL, "shm_lock")) {
+        printk(KERN_INFO "Error in shm_lock class create");
     }
 
+    /* Init sm_ds spink lock */
+    spin_lock_init(&sm_ds_lock);
     return 0;
 }
 
-static __exit dev_mmap_exit (void)
+static __exit dev_shm_lock_exit (void)
 {
-    device_destroy(mem_class, MKDEV(DEV_MMAP_MAJOR, DEV_MMAP_MINOR));
+    device_destroy(shm_lock_class, MKDEV(DEV_SHM_LOCK_MAJOR, DEV_SHM_LOCK_MINOR));
     return 0;
 }
 
-module_init(dev_mmap_init);
-module_exit(dev_mmap_exit);
+static sm_ds *get_smds(key_t key)
+{
+    struct list_head *p;
+    sm_ds *smds;
+    list_for_each(p, &sm_ds_list) {
+        smds = list_entry(p, sm_ds, list);
+        if (smds -> key == key) {
+            return smds;
+        }
+    }
+    return NULL;
+}
+
+static int list_add_smds(key_t key)
+{
+    int ret = 0;
+    sm_ds *smds = NULL;
+    tident_t *tmp = NULL;
+    smds = kmalloc(sizeof(sm_ds), GFP_KERNEL);
+    if (!smds) {
+        ret = -ENOMEM;
+        goto errout;
+    }
+    smds -> key = key;
+    smds -> lock = UNLOCKED;
+    smds -> wli = NULL;
+    INIT_LIST_HEAD(&(smds -> tident_list.list));
+    ret = list_add_tident(smds);
+    if (ret != 0)
+        goto errout;
+    list_add_tail(smds, &sm_ds_list);
+
+ errout:
+    return ret;
+}
+
+static int list_add_tident(sm_ds *smds)
+{
+    int ret = 0;
+    tident_t *tmp = NULL;
+    tmp = kmalloc(sizeof(tident_t), GFP_KERNEL);
+    if (!tmp) {
+        ret = -ENOMEM;
+        goto errout;
+    }
+    /* Add tident_t entry */
+    tmp -> pid = current -> pid;
+    tmp -> time.tv_sec = current -> start_time.tv_sec;
+    tmp -> time.tv_nsec = current -> start_time.tv_nsec;
+    list_add_tail(tmp, &smds -> tident_list);
+
+ errout:
+    return ret;
+}
+
+static int task_mprotect_pid(pid_t pid, unsigned long start, size_t len,
+                             unsigned long prot)
+{
+    int ret = 0;
+    struct task_struct *tsk = NULL;
+    struct pid *pid_struct = NULL;
+
+    pid_struct = find_get_pid(pid);
+    if (!pid_struct) {
+        ret = -ESRCH;
+        goto errout;
+    }
+    /* To map from pid to task_struct */
+    tsk = get_pid_task(pid, PIDTYPE_PID);
+    if (!tsk) {
+        ret = -ESRCH;
+        goto errout;
+    }
+
+    ret = task_mprotect(tsk, start, len, prot);
+
+ errout:
+    return ret;
+}
+
+static int task_mprotect(struct task_struct *tsk, unsigned long start,
+                         size_t len, unsigned long prot)
+{
+	unsigned long vm_flags, nstart, end, tmp, reqprot;
+	struct vm_area_struct *vma, *prev;
+	int error = -EINVAL;
+	const int grows = prot & (PROT_GROWSDOWN|PROT_GROWSUP);
+	prot &= ~(PROT_GROWSDOWN|PROT_GROWSUP);
+	if (grows == (PROT_GROWSDOWN|PROT_GROWSUP)) /* can't be both */
+		return -EINVAL;
+
+	if (start & ~PAGE_MASK)
+		return -EINVAL;
+	if (!len)
+		return 0;
+	len = PAGE_ALIGN(len);
+	end = start + len;
+	if (end <= start)
+		return -ENOMEM;
+	if (!arch_validate_prot(prot))
+		return -EINVAL;
+
+	reqprot = prot;
+	/*
+	 * Does the application expect PROT_READ to imply PROT_EXEC:
+	 */
+	if ((prot & PROT_READ) && (tsk->personality & READ_IMPLIES_EXEC))
+		prot |= PROT_EXEC;
+
+	vm_flags = calc_vm_prot_bits(prot);
+
+	down_write(&tsk->mm->mmap_sem);
+
+	vma = find_vma_prev(tsk->mm, start, &prev);
+	error = -ENOMEM;
+	if (!vma)
+		goto out;
+	if (unlikely(grows & PROT_GROWSDOWN)) {
+		if (vma->vm_start >= end)
+			goto out;
+		start = vma->vm_start;
+		error = -EINVAL;
+		if (!(vma->vm_flags & VM_GROWSDOWN))
+			goto out;
+	}
+	else {
+		if (vma->vm_start > start)
+			goto out;
+		if (unlikely(grows & PROT_GROWSUP)) {
+			end = vma->vm_end;
+			error = -EINVAL;
+			if (!(vma->vm_flags & VM_GROWSUP))
+				goto out;
+		}
+	}
+	if (start > vma->vm_start)
+		prev = vma;
+
+	for (nstart = start ; ; ) {
+		unsigned long newflags;
+
+		/* Here we know that  vma->vm_start <= nstart < vma->vm_end. */
+
+		newflags = vm_flags | (vma->vm_flags & ~(VM_READ | VM_WRITE | VM_EXEC));
+
+		/* newflags >> 4 shift VM_MAY% in place of VM_% */
+		if ((newflags & ~(newflags >> 4)) & (VM_READ | VM_WRITE | VM_EXEC)) {
+			error = -EACCES;
+			goto out;
+		}
+
+		error = security_file_mprotect(vma, reqprot, prot);
+		if (error)
+			goto out;
+
+		tmp = vma->vm_end;
+		if (tmp > end)
+			tmp = end;
+		error = mprotect_fixup(vma, &prev, nstart, tmp, newflags);
+		if (error)
+			goto out;
+		nstart = tmp;
+
+		if (nstart < prev->vm_end)
+			nstart = prev->vm_end;
+		if (nstart >= end)
+			goto out;
+
+		vma = prev->vm_next;
+		if (!vma || vma->vm_start != nstart) {
+			error = -ENOMEM;
+			goto out;
+		}
+	}
+out:
+	up_write(&tsk->mm->mmap_sem);
+	return error;
+}
+
+module_init(dev_shm_lock_init);
+module_exit(dev_shm_lock_exit);
