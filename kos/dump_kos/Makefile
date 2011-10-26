@@ -1,5 +1,5 @@
 #linux source directory
-SOURCE_DIR:=../..//linux-2.6.38.8
+SOURCE_DIR:=/home/sree/linux-2.6.38.8
 
 obj-m += shm_ko.o
 

@@ -25,8 +25,12 @@
 #include <linux/cdev.h>
 #include <linux/list.h>
 #include <linux/mman.h>
+#include <linux/semaphore.h>
+#include <asm/page_types.h>
 
 #include "./shm_ko.h"
+#include <linux/mm.h>
+
 /* #include <asm/unistd.h> */
 
 MODULE_LICENSE("GPL");
@@ -34,7 +38,8 @@ MODULE_LICENSE("GPL");
 #define DEV_SHM_LOCK_MAJOR 15
 #define DEV_SHM_LOCK_MINOR 16
 
-#define DUMP_STACK() { extern void dump_stack(); dump_stack();}
+#define DUMP_STACK() ;//{ extern void dump_stack(void); dump_stack();}
+#define PRINT_LINE() printk (KERN_INFO "%s:%d", __FUNCTION__, __LINE__)
 
 static spinlock_t sm_ds_lock;
 
@@ -50,74 +55,149 @@ static int open_mem(struct inode * inode, struct file * filp)
 
 static int shm_lock_open(struct inode *inode, struct file *filp)
 {
-    int minor;
-    const struct memdev *dev;
-
     DUMP_STACK();
 
     return open_mem(inode, filp);
 }
 
-static int shm_reg(void *arg)
+static int shm_lock(sm_ds __user *arg)
 {
     int ret = 0;
-    key_t key;
+    shm_lock_t shml;
     sm_ds *smds = NULL;
-    shm_reg_t shm_reg;
 
-    copy_from_user(&shm_reg, arg, sizeof(shm_reg_t));
+    printk(KERN_INFO "In lock");
 
+    if(copy_from_user(&shml, arg, sizeof(shm_lock_t)))
+        return -EINVAL;
+
+    PRINT_LINE();
     /* Acquire lock to access sm_ds */
     spin_lock(&sm_ds_lock);
+    PRINT_LINE();
 
-    /* Check if an try with the key is present */
-    smds = get_smds(key);
+    /* Check if an array with the key is present */
+    smds = get_smds(shml.key);
 
     if (!smds) {
-        ret = list_add_smds(shm_reg.key);
-        if (ret != 0)
+        printk(KERN_INFO "Inval smds..gona add");
+        ret = list_add_smds(shml.key, &smds);
+        if (ret != 0 || !smds) {
+            PRINT_LINE();
             goto errout;
-    }
-
-    /* Entry is present */
-    /* check if its already locked */
-    if (smds) {
-        /* Check if the shared memory is already locked.
-         * If yes, then make the whole shared memory RO */
-        if (smds -> lock == LOCKED) {
-            /* Lock the whole shared memory */
-            /* TODO */
         }
-        ret = list_add_tident(smds);
     }
 
-errout:
-        spin_unlock(&sm_ds_lock);
-    return ret;
-}
+    /* Entry is present.
+     * check if its already locked by some other task.
+     * Yield and test */
+    down(&smds->sm_sem);
 
-static int shm_lock(void *arg)
-{
+    /* Update sm_ds struct */
+    smds -> lock             = LOCKED;
+    smds -> wli.pid          = current->pid;
+    smds->wli.time.tv_sec    = current->start_time.tv_sec;
+    smds -> wli.time.tv_nsec = current -> start_time.tv_nsec;
 
-    return 0;
+    /* Stop all peer tasks AND update PTEs.
+     * (Lock the whole shared memory) AND start
+     * the tasks. */
+
+    ret = tasks_act(shml.vmaddr, IOCTL_LOCK);
+    if (ret < 0) {
+        PRINT_LINE();
+        goto errout;
+    }
+
+ errout:
+    spin_unlock(&sm_ds_lock);
+   return ret;
 }
 
 static int shm_unlock(void *arg)
 {
 
-    return 0;
+    int ret = 0;
+    shm_lock_t shml;
+    sm_ds *smds = NULL;
+
+    if (copy_from_user(&shml, arg, sizeof(shm_lock_t))
+        != sizeof(shm_lock_t))
+        return -EINVAL;
+    /* Acquire lock to access sm_ds */
+    spin_lock(&sm_ds_lock);
+
+    /* Check if an array with the key is present */
+    smds = get_smds(shml.key);
+
+    printk(KERN_INFO "In Unlock");
+    if (!smds) {
+        printk (KERN_EMERG "Cant find key");
+        ret = -EINVAL;
+        goto errout;
+    }
+
+    /* First, check if its locked */
+    if (smds -> lock != LOCKED) {
+        printk(KERN_ERR "Not locked.");
+        ret = -EINVAL;
+        goto errout;
+    }
+
+    /* Next, check if its locked by this task.*/
+    if (smds -> wli.pid  != current->pid ||
+        smds->wli.time.tv_sec != current->start_time.tv_sec ||
+        smds -> wli.time.tv_nsec != current -> start_time.tv_nsec) {
+        printk(KERN_ERR "Task identity not matched.");
+        printk(KERN_INFO "Current- pid : %d tv_sec : %d tv_nsec: %d",
+               current->pid, (int) current->start_time.tv_sec,
+               (int) current->start_time.tv_nsec);
+        printk(KERN_INFO "smds- pid : %d tv_sec : %d tv_nsec: %d",
+               (int) smds->wli.pid,
+               (int) smds->wli.time.tv_sec,
+               (int) smds->wli.time.tv_nsec);
+        ret = -EINVAL;
+        goto errout;
+    }
+
+    /* Stop all peer tasks AND update PTEs.
+     * (Unlock the whole shared memory) AND start
+     * the tasks. */
+
+    printk(KERN_INFO "Gona update other tasks");
+    ret = tasks_act(shml.vmaddr, IOCTL_UNLOCK);
+    if (ret < 0) {
+        PRINT_LINE();
+        goto errout;
+    }
+
+    /* Reset smds */
+    smds->lock = UNLOCKED;
+    smds->wli.pid = -1;
+    smds->wli.time.tv_sec = 0;
+    smds->wli.time.tv_nsec = 0;
+
+    printk(KERN_INFO "Gona update semaphore");
+
+    /* Up the semaphore */
+    up(&smds->sm_sem);
+    printk(KERN_INFO "Done with unlocking task - pid : %d",
+           current->pid);
+ errout:
+    spin_unlock(&sm_ds_lock);
+   return ret;
 }
 
 static long shm_lock_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
     DUMP_STACK();
     switch(cmd) {
-    case IOCTL_REG:
-        return shm_reg(arg);
+    /* case IOCTL_REG: */
+    /*     return shm_reg(arg); */
     case IOCTL_LOCK:
-        return shm_lock(arg);
+        return shm_lock((void *) arg);
     case IOCTL_UNLOCK:
-        return shm_unlock(arg);
+        return shm_unlock((void *) arg);
     default:
         return -EINVAL;
     }
@@ -137,13 +217,12 @@ static char *mem_devnode(struct device *dev, mode_t *mode)
 	return NULL;
 }
 
-static int __init dev_shm_lock_init(void)
+int __init dev_shm_lock_init(void)
 {
-	int minor;
-	int err;
 
+	printk(KERN_INFO "**************** In shm_ko init");
 
-	if (register_chrdev(DEV_SHM_LOCK_MAJOR, "slock", &shm_lock_fops))
+ 	if (register_chrdev(DEV_SHM_LOCK_MAJOR, "slock", &shm_lock_fops))
 		printk("unable to get major %d for memory devs\n", DEV_SHM_LOCK_MAJOR);
 
 	shm_lock_class = class_create(THIS_MODULE, "slock");
@@ -161,10 +240,11 @@ static int __init dev_shm_lock_init(void)
     return 0;
 }
 
-static __exit dev_shm_lock_exit (void)
+static __exit void  dev_shm_lock_exit (void)
 {
+    unregister_chrdev(DEV_SHM_LOCK_MAJOR, "slock");
     device_destroy(shm_lock_class, MKDEV(DEV_SHM_LOCK_MAJOR, DEV_SHM_LOCK_MINOR));
-    return 0;
+    class_destroy(shm_lock_class);
 }
 
 static sm_ds *get_smds(key_t key)
@@ -180,80 +260,67 @@ static sm_ds *get_smds(key_t key)
     return NULL;
 }
 
-static int list_add_smds(key_t key)
+/* Always/Only called from shm_lock context */
+static int list_add_smds(key_t key, sm_ds **ret_smds)
 {
     int ret = 0;
     sm_ds *smds = NULL;
-    tident_t *tmp = NULL;
     smds = kmalloc(sizeof(sm_ds), GFP_KERNEL);
     if (!smds) {
         ret = -ENOMEM;
         goto errout;
     }
-    smds -> key = key;
-    smds -> lock = UNLOCKED;
-    smds -> wli = NULL;
-    INIT_LIST_HEAD(&(smds -> tident_list.list));
-    ret = list_add_tident(smds);
-    if (ret != 0)
-        goto errout;
-    list_add_tail(smds, &sm_ds_list);
+    smds -> key              = key;
+    sema_init(&smds->sm_sem, 1);
+    smds -> lock             = LOCKED;
+    smds -> wli.pid          = current->pid;
+    smds->wli.time.tv_sec    = current->start_time.tv_sec;
+    smds -> wli.time.tv_nsec = current -> start_time.tv_nsec;
+
+    if (ret_smds)
+        *ret_smds = smds;
+
+    list_add_tail(&smds->list, &sm_ds_list);
 
  errout:
     return ret;
 }
 
-static int list_add_tident(sm_ds *smds)
-{
-    int ret = 0;
-    tident_t *tmp = NULL;
-    tmp = kmalloc(sizeof(tident_t), GFP_KERNEL);
-    if (!tmp) {
-        ret = -ENOMEM;
-        goto errout;
-    }
-    /* Add tident_t entry */
-    tmp -> pid = current -> pid;
-    tmp -> time.tv_sec = current -> start_time.tv_sec;
-    tmp -> time.tv_nsec = current -> start_time.tv_nsec;
-    list_add_tail(tmp, &smds -> tident_list);
+/* static int task_mprotect_pid(pid_t pid, unsigned long start, size_t len, */
+/*                              unsigned long prot) */
+/* { */
+/*     int ret = 0; */
+/*     struct task_struct *tsk = NULL; */
+/*     struct pid *pid_struct = NULL; */
 
- errout:
-    return ret;
-}
+/*     pid_struct = find_get_pid(pid); */
+/*     if (!pid_struct) { */
+/*         ret = -ESRCH; */
+/*         goto errout; */
+/*     } */
+/*     /\* To map from pid to task_struct *\/ */
+/*     tsk = get_pid_task(pid, PIDTYPE_PID); */
+/*     if (!tsk) { */
+/*         ret = -ESRCH; */
+/*         goto errout; */
+/*     } */
 
-static int task_mprotect_pid(pid_t pid, unsigned long start, size_t len,
-                             unsigned long prot)
-{
-    int ret = 0;
-    struct task_struct *tsk = NULL;
-    struct pid *pid_struct = NULL;
+/*     ret = task_mprotect(tsk, start, len, prot); */
 
-    pid_struct = find_get_pid(pid);
-    if (!pid_struct) {
-        ret = -ESRCH;
-        goto errout;
-    }
-    /* To map from pid to task_struct */
-    tsk = get_pid_task(pid, PIDTYPE_PID);
-    if (!tsk) {
-        ret = -ESRCH;
-        goto errout;
-    }
-
-    ret = task_mprotect(tsk, start, len, prot);
-
- errout:
-    return ret;
-}
+/*  errout: */
+/*     return ret; */
+/* } */
 
 static int task_mprotect(struct task_struct *tsk, unsigned long start,
                          size_t len, unsigned long prot)
 {
-	unsigned long vm_flags, nstart, end, tmp, reqprot;
+	unsigned long vm_flags, nstart, end, tmp;
 	struct vm_area_struct *vma, *prev;
 	int error = -EINVAL;
 	const int grows = prot & (PROT_GROWSDOWN|PROT_GROWSUP);
+
+    DUMP_STACK();
+
 	prot &= ~(PROT_GROWSDOWN|PROT_GROWSUP);
 	if (grows == (PROT_GROWSDOWN|PROT_GROWSUP)) /* can't be both */
 		return -EINVAL;
@@ -269,7 +336,6 @@ static int task_mprotect(struct task_struct *tsk, unsigned long start,
 	if (!arch_validate_prot(prot))
 		return -EINVAL;
 
-	reqprot = prot;
 	/*
 	 * Does the application expect PROT_READ to imply PROT_EXEC:
 	 */
@@ -318,9 +384,10 @@ static int task_mprotect(struct task_struct *tsk, unsigned long start,
 			goto out;
 		}
 
-		error = security_file_mprotect(vma, reqprot, prot);
-		if (error)
-			goto out;
+        /* Not needed since it a void function */
+		/* error = security_file_mprotect(vma, reqprot, prot); */
+		/* if (error) */
+		/* 	goto out; */
 
 		tmp = vma->vm_end;
 		if (tmp > end)
@@ -346,5 +413,155 @@ out:
 	return error;
 }
 
+static int tasks_act(unsigned long addr, enum shm_lck lck)
+{
+    int ret = 0;
+    struct vm_area_struct *addr_vma = NULL, *other_vma = NULL;
+    struct file *addr_file = NULL;
+    struct address_space *addr_f_mapping = NULL, *addr_map = NULL;
+    struct page *pg = NULL;
+    pgoff_t pgoff = 0;
+	struct prio_tree_iter iter;
+    struct task_struct *other_task = NULL;
+    struct pid *other_task_pid = NULL;
+    struct mm_struct *other_mm_struct = NULL;
+
+    printk(KERN_INFO "Getting mm read sem");
+	down_read(&current->mm->mmap_sem);
+    /* Find vma_are_struct object and page struct */
+    printk(KERN_INFO "Getting user pages");
+    ret = get_user_pages(current, current->mm, addr, 1, 0, 0,
+                         &pg, &addr_vma);
+    if (ret != 1) {
+        PRINT_LINE();
+        goto errout2;
+    }
+
+    if (!pg || !addr_vma || (addr < addr_vma->vm_start)) {
+        PRINT_LINE();
+        ret = -EINVAL;
+        goto errout2;
+    }
+
+    printk(KERN_INFO "Page addr : 0x%x vma addr : 0x%x",
+           (unsigned int) pg, (unsigned int) addr_vma);
+    pgoff = pg->index << (PAGE_CACHE_SHIFT - PAGE_SHIFT);
+
+    /* Check if its a mapped file */
+    addr_file = addr_vma->vm_file;
+    if(!addr_file) {
+        ret = -EINVAL;
+        PRINT_LINE();
+        goto errout2;
+    }
+
+    printk(KERN_INFO "vm file : 0x%x", (unsigned int) addr_file);
+
+    addr_f_mapping = addr_file->f_mapping;
+    if (!addr_f_mapping) {
+        ret = -EINVAL;
+        PRINT_LINE();
+        goto errout2;
+    }
+
+    printk(KERN_INFO "addr_map : 0x%x", (unsigned int) addr_map);
+
+    addr_map = pg->mapping;
+
+    if (addr_map != addr_f_mapping) {
+        /* Sanity Check */
+        ret = -EINVAL;
+        PRINT_LINE();
+        goto errout2;
+    }
+
+    /* Get List of all vma across processes using that has
+     * mapped the address */
+	spin_lock(&addr_map->i_mmap_lock);
+    printk(KERN_INFO "acquired i_mmap_lock. Now iterating list of vmas");
+	vma_prio_tree_foreach(other_vma, &iter, &addr_map->i_mmap, pgoff, pgoff)  {
+        /* other_vma points to vma_struct obj of one of the processes
+         * using the shared address */
+        /* owner is rcu..check that */
+        printk(KERN_INFO "other vma is 0x%x", (unsigned int)other_vma);
+        other_mm_struct = other_vma->vm_mm;
+        printk(KERN_INFO "other mm_struct : 0x%x",
+               (unsigned int)other_mm_struct);
+
+        other_task = other_mm_struct->owner;
+        /* printk(KERN_INFO "Gona get other vma's pid struct"); */
+        /* other_task_pid = NULL; */
+        /* other_task_pid = other_vma->vm_file->f_owner.pid; */
+
+        /* if (!other_task_pid) { */
+        /*     ret = -EINVAL; */
+        /*     PRINT_LINE(); */
+        /*     goto errout1; */
+        /* } */
+        /* printk(KERN_INFO "Gona get other vma's task"); */
+        /* other_task = pid_task(other_task_pid, PIDTYPE_PID); */
+
+        printk(KERN_INFO "other vma : 0x%x other task : 0x%x "
+               "pid : %d", (unsigned int) other_vma,
+               (unsigned int) other_task->pid,
+               (int) other_task->pid);
+
+        /* /\* Stop the task *\/ */
+        /* force_sig(SIGSTOP, other_task); */
+
+        if (other_vma == addr_vma) {
+            printk(KERN_INFO "Same task..contn");
+            continue;
+        }
+        printk(KERN_INFO "Sent SIGSTOP signal");
+
+        /* /\* Check if the task is stopped *\/ */
+        /* if (!task_is_stopped(other_task)) { */
+        /*     printk(KERN_ERR "Task (pid %d) could not be stopped", */
+        /*            other_task->pid); */
+        /* } */
+
+        if (lck == LOCKED) {
+            /* mem protect the region for the task */
+            /* For now, lets assume that we are mprotecting for one page */
+            printk(KERN_INFO "memprotecting the task to RO");
+            /* ret = task_mprotect(other_task, other_vma->vm_start, */
+            /*                     PAGE_SIZE, PROT_READ); */
+        } else {
+            /* mem protect the region for the task */
+            /* For now, lets assume that we are mprotecting for one page */
+            printk(KERN_INFO "memprotecting the task to RW");
+            /* ret = task_mprotect(other_task, other_vma->vm_start, */
+            /*                     PAGE_SIZE, PROT_WRITE); */
+        }
+
+        if (ret < 0) {
+            PRINT_LINE();
+            goto errout1;
+        }
+
+        /* /\* Start the task *\/ */
+        /* force_sig(SIGCONT, other_task); */
+
+        printk(KERN_INFO "Sent SIGCONT signal");
+
+        /* /\* Check if the task is started *\/ */
+        /* if (other_task->state != 0) { */
+        /*     printk(KERN_ERR "Task (pid %d) could not be started", */
+        /*            other_task->pid); */
+        /* } */
+
+        printk(KERN_INFO "Done with task : 0x%x pid : %d",
+               (unsigned int) other_task, (int) other_task->pid);
+	}
+
+ errout1:
+	spin_unlock(&addr_map->i_mmap_lock);
+ errout2:
+	up_read(&current->mm->mmap_sem);
+    return ret;
+}
+
 module_init(dev_shm_lock_init);
 module_exit(dev_shm_lock_exit);
+
