@@ -75,10 +75,10 @@ scm_version()
 		[ -w . ] && git update-index --refresh --unmerged > /dev/null
 
 		# Check for uncommitted changes
-		if git diff-index --name-only HEAD | grep -v "^scripts/package" \
-		    | read dummy; then
-			printf '%s' -dirty
-		fi
+#		if git diff-index --name-only HEAD | grep -v "^scripts/package" \
+#		    | read dummy; then
+#			printf '%s' -dirty
+#		fi
 
 		# All done with git
 		return

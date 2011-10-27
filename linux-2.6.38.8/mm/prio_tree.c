@@ -13,6 +13,7 @@
 
 #include <linux/mm.h>
 #include <linux/prio_tree.h>
+#include <linux/module.h>
 
 /*
  * See lib/prio_tree.c for details on the general radix priority search tree
@@ -205,3 +206,4 @@ struct vm_area_struct *vma_prio_tree_next(struct vm_area_struct *vma,
 	} else
 		return NULL;
 }
+EXPORT_SYMBOL(vma_prio_tree_next);

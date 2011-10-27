@@ -1675,6 +1675,8 @@ out:
 	return prev ? prev->vm_next : vma;
 }
 
+EXPORT_SYMBOL(find_vma_prev);
+
 /*
  * Verify that the stack growth is acceptable and
  * update accounting. This is shared with both the

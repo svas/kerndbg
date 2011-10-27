@@ -229,6 +229,8 @@ fail:
 	return error;
 }
 
+EXPORT_SYMBOL(mprotect_fixup);
+
 SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
 		unsigned long, prot)
 {

@@ -121,8 +121,7 @@ static int shm_unlock(void *arg)
     shm_lock_t shml;
     sm_ds *smds = NULL;
 
-    if (copy_from_user(&shml, arg, sizeof(shm_lock_t))
-        != sizeof(shm_lock_t))
+    if (copy_from_user(&shml, arg, sizeof(shm_lock_t)))
         return -EINVAL;
     /* Acquire lock to access sm_ds */
     spin_lock(&sm_ds_lock);
