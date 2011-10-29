@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <signal.h>
+#include <curses.h>
 
 #define SHMSZ 4096
 
@@ -20,32 +21,29 @@ typedef struct {
 } shm_lock_t;
 
 enum ioctl_cmds {
-    IOCTL_REG,
     IOCTL_LOCK,
     IOCTL_UNLOCK
 };
 
-int dev_fd;
 key_t key;
 char *shm;
 
 int open_dev();
 int shm_cmd(unsigned long vma, key_t key, int cmd);
-void sigint_handler(int signal);
+/* void sigint_handler(int signal); */
+int lock(unsigned long addr, key_t key);
+int unlock(unsigned long addr, key_t key);
 
 int main(int argc, char **argv)
 {
     char c, tmp;
     int shmid;
-    char *s;
     pid_t pid = 0;
 
     pid = getpid();
 
     printf("own pid is %d", pid);
 
-    signal(SIGINT, sigint_handler);
-    open_dev();
     /*
      * Shared memory segment at 1234
      * "1234".
@@ -72,40 +70,61 @@ int main(int argc, char **argv)
      * Zero out memory segment
      */
     memset(shm,0,SHMSZ);
-    s = shm;
 
-    if (shm_cmd((unsigned long)shm, key, IOCTL_LOCK) < 0) {
+ get_usr_char:
+    printf("Enter 'l' to lock 'u' to unlock\n");
+    c = getchar();
+    printf("entered character is %c\n", c);
+    switch (c) {
+    case 'l':
+        printf("Received character 'l'");
+        lock((unsigned long)shm, key);
+        goto get_usr_char;
+    case 'u':
+        printf("Received character 'u'");
+        unlock((unsigned long)shm, key);
+        goto get_usr_char;
+    default:
+        printf("Are you sure to quit? Type 'Y'\n");
+        c = getchar();
+        if (c == 'Y')
+            goto errout;
+        else
+            goto get_usr_char;
+    }
+
+
+ errout:
+    printf("Closing the app....\n");
+    return 0;
+}
+
+int lock(unsigned long addr, key_t key)
+{
+    int ret = 0;
+
+    if (shm_cmd(addr, key, IOCTL_LOCK) < 0) {
+        printf("Error executing lock ioctl\n");
+        ret = -1;
         goto errout;
     }
 
-    /* /\* */
-    /*  * Read user input from client code and tell */
-    /*  * the user what was written. */
-    /*  *\/ */
-    /* while (*shm != 'q'){ */
-    /*     sleep(1); */
-    /*     if(tmp == *shm) */
-    /*         continue; */
-
-    /*     fprintf(stdout, "You pressed %c\n",*shm); */
-    /*     tmp = *shm; */
-    /* } */
-
-    /* if(shmdt(shm) != 0) */
-    /*     fprintf(stderr, "Could not close memory segment.\n"); */
-
-    /* Busy loop */
-
-    /* Unlock */
-    /* if (shm_cmd((unsigned long)shm, key, IOCTL_UNLOCK) < 0) { */
-    /*     goto errout; */
-    /* } */
-
-    while(1);
-
  errout:
-    close(dev_fd);
-    return 0;
+    return ret;
+}
+
+int unlock(unsigned long addr, key_t key)
+{
+    int ret = 0;
+
+    printf("Gona unlock....\n");
+
+    if (shm_cmd(addr, key, IOCTL_UNLOCK) < 0) {
+        printf("Error executing unlock ioctl\n");
+        ret = -1;
+    }
+ errout:
+    return ret;
 }
 
 int open_dev()
@@ -118,31 +137,41 @@ int open_dev()
         perror ("shm_lock");
         return -1;
     }
-    dev_fd = fd;
-    return 0;
+    return fd;
 }
 
 int shm_cmd(unsigned long vma, key_t key, int cmd)
 {
     shm_lock_t shml;
+    int ret = 0, fd = 0;
+
+    printf("Opening device file\n");
+    fd = open_dev();
+
     shml.vma = vma;
     shml.key = key;
     shml.len = 4096;
-    if (ioctl(dev_fd, cmd, &shml) < 0) {
+
+   printf("Sending ioctl\n");
+    if (ioctl(fd, cmd, &shml) < 0) {
         perror("ioctl lock");
-        return -1;
+        ret = -1;
+        goto errout;
     }
 
-    return 0;
+ errout:
+    printf("Closing the dev_fd file\n");
+    close(fd);
+    return ret;
 }
 
-void sigint_handler(int signal)
-{
-    printf("Received signal : %d\n", signal);
-    printf("Gona unlock....\n");
+/* void sigint_handler(int signal) */
+/* { */
+/*     printf("Received signal : %d\n", signal); */
+/*     printf("Gona unlock....\n"); */
 
-    if (shm_cmd((unsigned long)shm, key, IOCTL_UNLOCK) < 0) {
-        printf("Error executing unlock ioctl\n");
-    }
-    exit(signal);
-}
+/*     if (shm_cmd((unsigned long)shm, key, IOCTL_UNLOCK) < 0) { */
+/*         printf("Error executing unlock ioctl\n"); */
+/*     } */
+/*     exit(signal); */
+/* } */

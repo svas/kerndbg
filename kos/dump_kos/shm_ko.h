@@ -13,7 +13,6 @@ enum shm_lck {
 };
 
 enum ioctl_cmds {
-    IOCTL_REG,
     IOCTL_LOCK,
     IOCTL_UNLOCK
 };

@@ -88,11 +88,25 @@ static int shm_lock(sm_ds __user *arg)
         }
     }
 
+    /* Next, check if its recursive lock */
+    if (smds -> wli.pid  == current->pid &&
+        smds->wli.time.tv_sec == current->start_time.tv_sec &&
+        smds -> wli.time.tv_nsec == current -> start_time.tv_nsec) {
+        printk(KERN_ERR "'Same Task' identity matched.");
+        ret = -EINVAL;
+        goto errout;
+    }
+
+    PRINT_LINE();
+    spin_unlock(&sm_ds_lock);
+
     /* Entry is present.
      * check if its already locked by some other task.
      * Yield and test */
+    PRINT_LINE();
     down(&smds->sm_sem);
 
+    spin_lock(&sm_ds_lock);
     /* Update sm_ds struct */
     smds -> lock             = LOCKED;
     smds -> wli.pid          = current->pid;
@@ -103,7 +117,7 @@ static int shm_lock(sm_ds __user *arg)
      * (Lock the whole shared memory) AND start
      * the tasks. */
 
-    ret = tasks_act(shml.vmaddr, IOCTL_LOCK);
+    ret = tasks_act(shml.vmaddr, LOCKED);
     if (ret < 0) {
         PRINT_LINE();
         goto errout;
@@ -111,6 +125,7 @@ static int shm_lock(sm_ds __user *arg)
 
  errout:
     spin_unlock(&sm_ds_lock);
+    PRINT_LINE();
    return ret;
 }
 
@@ -121,11 +136,14 @@ static int shm_unlock(void *arg)
     shm_lock_t shml;
     sm_ds *smds = NULL;
 
+    PRINT_LINE();
     if (copy_from_user(&shml, arg, sizeof(shm_lock_t)))
         return -EINVAL;
+    PRINT_LINE();
     /* Acquire lock to access sm_ds */
     spin_lock(&sm_ds_lock);
 
+    PRINT_LINE();
     /* Check if an array with the key is present */
     smds = get_smds(shml.key);
 
@@ -164,7 +182,7 @@ static int shm_unlock(void *arg)
      * the tasks. */
 
     printk(KERN_INFO "Gona update other tasks");
-    ret = tasks_act(shml.vmaddr, IOCTL_UNLOCK);
+    ret = tasks_act(shml.vmaddr, UNLOCKED);
     if (ret < 0) {
         PRINT_LINE();
         goto errout;
@@ -176,12 +194,16 @@ static int shm_unlock(void *arg)
     smds->wli.time.tv_sec = 0;
     smds->wli.time.tv_nsec = 0;
 
+    spin_unlock(&sm_ds_lock);
+
     printk(KERN_INFO "Gona update semaphore");
 
     /* Up the semaphore */
     up(&smds->sm_sem);
     printk(KERN_INFO "Done with unlocking task - pid : %d",
            current->pid);
+    return ret;
+
  errout:
     spin_unlock(&sm_ds_lock);
    return ret;
@@ -189,18 +211,21 @@ static int shm_unlock(void *arg)
 
 static long shm_lock_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
-    DUMP_STACK();
+    printk(KERN_INFO "Got ioctl from user");
     switch(cmd) {
     /* case IOCTL_REG: */
     /*     return shm_reg(arg); */
     case IOCTL_LOCK:
+        printk(KERN_INFO "Got lock call");
         return shm_lock((void *) arg);
     case IOCTL_UNLOCK:
+        printk(KERN_INFO "Got unlock call");
         return shm_unlock((void *) arg);
     default:
+        printk(KERN_INFO "undefined lock param");
         return -EINVAL;
     }
-    return 1;
+    return 0;
 }
 
 static const struct file_operations shm_lock_fops = {
@@ -271,10 +296,10 @@ static int list_add_smds(key_t key, sm_ds **ret_smds)
     }
     smds -> key              = key;
     sema_init(&smds->sm_sem, 1);
-    smds -> lock             = LOCKED;
-    smds -> wli.pid          = current->pid;
-    smds->wli.time.tv_sec    = current->start_time.tv_sec;
-    smds -> wli.time.tv_nsec = current -> start_time.tv_nsec;
+    smds -> lock             = UNLOCKED;
+    smds -> wli.pid          = -1;
+    smds->wli.time.tv_sec    = 0;
+    smds -> wli.time.tv_nsec = 0;
 
     if (ret_smds)
         *ret_smds = smds;
@@ -488,30 +513,19 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
                (unsigned int)other_mm_struct);
 
         other_task = other_mm_struct->owner;
-        /* printk(KERN_INFO "Gona get other vma's pid struct"); */
-        /* other_task_pid = NULL; */
-        /* other_task_pid = other_vma->vm_file->f_owner.pid; */
-
-        /* if (!other_task_pid) { */
-        /*     ret = -EINVAL; */
-        /*     PRINT_LINE(); */
-        /*     goto errout1; */
-        /* } */
-        /* printk(KERN_INFO "Gona get other vma's task"); */
-        /* other_task = pid_task(other_task_pid, PIDTYPE_PID); */
 
         printk(KERN_INFO "other vma : 0x%x other task : 0x%x "
                "pid : %d", (unsigned int) other_vma,
                (unsigned int) other_task->pid,
                (int) other_task->pid);
 
-        /* /\* Stop the task *\/ */
-        /* force_sig(SIGSTOP, other_task); */
-
         if (other_vma == addr_vma) {
             printk(KERN_INFO "Same task..contn");
             continue;
         }
+
+        /* Stop the task */
+        force_sig(SIGSTOP, other_task);
         printk(KERN_INFO "Sent SIGSTOP signal");
 
         /* /\* Check if the task is stopped *\/ */
@@ -524,14 +538,14 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
             /* mem protect the region for the task */
             /* For now, lets assume that we are mprotecting for one page */
             printk(KERN_INFO "memprotecting the task to RO");
-            /* ret = task_mprotect(other_task, other_vma->vm_start, */
-            /*                     PAGE_SIZE, PROT_READ); */
+            ret = task_mprotect(other_task, other_vma->vm_start,
+                                PAGE_SIZE, PROT_READ);
         } else {
             /* mem protect the region for the task */
             /* For now, lets assume that we are mprotecting for one page */
             printk(KERN_INFO "memprotecting the task to RW");
-            /* ret = task_mprotect(other_task, other_vma->vm_start, */
-            /*                     PAGE_SIZE, PROT_WRITE); */
+            ret = task_mprotect(other_task, other_vma->vm_start,
+                                PAGE_SIZE, PROT_WRITE);
         }
 
         if (ret < 0) {
@@ -539,9 +553,8 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
             goto errout1;
         }
 
-        /* /\* Start the task *\/ */
-        /* force_sig(SIGCONT, other_task); */
-
+        /* Start the task */
+        force_sig(SIGCONT, other_task);
         printk(KERN_INFO "Sent SIGCONT signal");
 
         /* /\* Check if the task is started *\/ */
@@ -554,10 +567,14 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
                (unsigned int) other_task, (int) other_task->pid);
 	}
 
+    printk(KERN_INFO "Done acting on other tasks");
+
  errout1:
 	spin_unlock(&addr_map->i_mmap_lock);
+    PRINT_LINE();
  errout2:
 	up_read(&current->mm->mmap_sem);
+    PRINT_LINE();
     return ret;
 }
 
