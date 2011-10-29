@@ -13,8 +13,9 @@ enum shm_lck {
 };
 
 enum ioctl_cmds {
+    IOCTL_UNLOCK,
     IOCTL_LOCK,
-    IOCTL_UNLOCK
+    IOCTL_MPROTECT_TEST
 };
 
 typedef struct __tident_t {

@@ -40,6 +40,7 @@ MODULE_LICENSE("GPL");
 
 #define DUMP_STACK() ;//{ extern void dump_stack(void); dump_stack();}
 #define PRINT_LINE() printk (KERN_INFO "%s:%d", __FUNCTION__, __LINE__)
+static int task_mprotect_wrapper(sm_ds __user *arg);
 
 static spinlock_t sm_ds_lock;
 
@@ -117,7 +118,7 @@ static int shm_lock(sm_ds __user *arg)
      * (Lock the whole shared memory) AND start
      * the tasks. */
 
-    ret = tasks_act(shml.vmaddr, LOCKED);
+    ret = tasks_act(shml.vmaddr, IOCTL_LOCK);
     if (ret < 0) {
         PRINT_LINE();
         goto errout;
@@ -182,7 +183,7 @@ static int shm_unlock(void *arg)
      * the tasks. */
 
     printk(KERN_INFO "Gona update other tasks");
-    ret = tasks_act(shml.vmaddr, UNLOCKED);
+    ret = tasks_act(shml.vmaddr, IOCTL_UNLOCK);
     if (ret < 0) {
         PRINT_LINE();
         goto errout;
@@ -212,15 +213,19 @@ static int shm_unlock(void *arg)
 static long shm_lock_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
     printk(KERN_INFO "Got ioctl from user");
+    printk(KERN_INFO "Got cmd %d", cmd);
     switch(cmd) {
-    /* case IOCTL_REG: */
-    /*     return shm_reg(arg); */
     case IOCTL_LOCK:
+        /* printk(KERN_INFO "Got mprotect test call"); */
+        /* return task_mprotect_wrapper((void *) arg); */
         printk(KERN_INFO "Got lock call");
         return shm_lock((void *) arg);
     case IOCTL_UNLOCK:
         printk(KERN_INFO "Got unlock call");
         return shm_unlock((void *) arg);
+    case IOCTL_MPROTECT_TEST:
+        printk(KERN_INFO "Got mprotect test call");
+        return task_mprotect_wrapper((void *) arg);
     default:
         printk(KERN_INFO "undefined lock param");
         return -EINVAL;
@@ -233,6 +238,30 @@ static const struct file_operations shm_lock_fops = {
     .unlocked_ioctl = shm_lock_ioctl,
     .llseek = noop_llseek,
 };
+
+static int task_mprotect_wrapper(sm_ds __user *arg)
+{
+    shm_lock_t shml;
+    int ret = 0;
+
+    printk(KERN_INFO "In task_mprotect_wrapper");
+
+    if(copy_from_user(&shml, arg, sizeof(shm_lock_t)))
+        return -EINVAL;
+
+    PRINT_LINE();
+    ret = task_mprotect(current, (unsigned long) shml.vmaddr,
+                        PAGE_SIZE, PROT_READ);
+    PRINT_LINE();
+    if (ret < 0) {
+        PRINT_LINE();
+        goto errout;
+    }
+    PRINT_LINE();
+ errout:
+    PRINT_LINE();
+    return ret;
+}
 
 static char *mem_devnode(struct device *dev, mode_t *mode)
 {
@@ -518,6 +547,9 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
                "pid : %d", (unsigned int) other_vma,
                (unsigned int) other_task->pid,
                (int) other_task->pid);
+        printk(KERN_INFO "other task vma-start : 0x%x vma-end : 0x%x",
+               (unsigned int)other_vma->vm_start,
+               (unsigned int)other_vma->vm_end);
 
         if (other_vma == addr_vma) {
             printk(KERN_INFO "Same task..contn");
@@ -534,7 +566,7 @@ static int tasks_act(unsigned long addr, enum shm_lck lck)
         /*            other_task->pid); */
         /* } */
 
-        if (lck == LOCKED) {
+        if (lck == IOCTL_LOCK) {
             /* mem protect the region for the task */
             /* For now, lets assume that we are mprotecting for one page */
             printk(KERN_INFO "memprotecting the task to RO");

@@ -21,8 +21,9 @@ typedef struct {
 } shm_lock_t;
 
 enum ioctl_cmds {
+    IOCTL_UNLOCK,
     IOCTL_LOCK,
-    IOCTL_UNLOCK
+    IOCTL_MPROTECT_TEST
 };
 
 key_t key;
@@ -33,6 +34,8 @@ int shm_cmd(unsigned long vma, key_t key, int cmd);
 /* void sigint_handler(int signal); */
 int lock(unsigned long addr, key_t key);
 int unlock(unsigned long addr, key_t key);
+int task_mprotect(unsigned long addr, key_t key);
+int write_shmem(unsigned long addr, size_t len);
 
 int main(int argc, char **argv)
 {
@@ -72,7 +75,7 @@ int main(int argc, char **argv)
     memset(shm,0,SHMSZ);
 
  get_usr_char:
-    printf("Enter 'l' to lock 'u' to unlock\n");
+    printf("Enter 'l' to lock; \n'u' to unlock; \n'w' to write to shmem; \n'm' to test mprotect\n");
     c = getchar();
     printf("entered character is %c\n", c);
     switch (c) {
@@ -83,6 +86,14 @@ int main(int argc, char **argv)
     case 'u':
         printf("Received character 'u'");
         unlock((unsigned long)shm, key);
+        goto get_usr_char;
+    case 'w':
+        printf("Received character 'w'");
+        write_shmem((unsigned long)shm, 1);
+        goto get_usr_char;
+    case 'm':
+        printf("Received character 'm'");
+        task_mprotect((unsigned long)shm, key);
         goto get_usr_char;
     default:
         printf("Are you sure to quit? Type 'Y'\n");
@@ -127,6 +138,36 @@ int unlock(unsigned long addr, key_t key)
     return ret;
 }
 
+int task_mprotect(unsigned long addr, key_t key)
+{
+    int ret = 0;
+
+    printf("In task mprotect\n");
+    if (shm_cmd(addr, key, IOCTL_MPROTECT_TEST) < 0) {
+        printf("Error executing mprotect ioctl\n");
+        ret = -1;
+        goto errout;
+    }
+
+    printf("Executed mprotect ioctl\n");
+
+ errout:
+    return ret;
+}
+
+int write_shmem(unsigned long addr, size_t len)
+{
+    int ret = 0;
+
+    printf("In write_shmem\n");
+    printf("now would try to write of len %u to 0x%x\n",
+           len, (unsigned int)addr);
+    memcpy((void *)addr, "A", 1);
+
+ errout:
+    return ret;
+}
+
 int open_dev()
 {
     shm_lock_t shml;
@@ -145,6 +186,8 @@ int shm_cmd(unsigned long vma, key_t key, int cmd)
     shm_lock_t shml;
     int ret = 0, fd = 0;
 
+    printf("Received 'cmd' : %d", cmd);
+
     printf("Opening device file\n");
     fd = open_dev();
 
@@ -152,7 +195,7 @@ int shm_cmd(unsigned long vma, key_t key, int cmd)
     shml.key = key;
     shml.len = 4096;
 
-   printf("Sending ioctl\n");
+    printf("Sending ioctl\n");
     if (ioctl(fd, cmd, &shml) < 0) {
         perror("ioctl lock");
         ret = -1;
