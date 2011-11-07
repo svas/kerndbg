@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 
     pid = getpid();
 
-    printf("own pid is %d", pid);
+    printf("own pid is %d\n", pid);
 
     /*
      * Shared memory segment at 1234
