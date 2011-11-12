@@ -1,0 +1,50 @@
+gdb/
+
+2010-03-31  Richard Earnshaw  <rearnsha@arm.com>
+
+	* arm-tdep.c (thumb_get_next_pc_raw): Correctly detect TBH
+	instructions.  Use the PC+4 if the base of the TBB or TBH is the 
+	PC register.
+
+===================================================================
+RCS file: /cvs/src/src/gdb/arm-tdep.c,v
+retrieving revision 1.301
+retrieving revision 1.302
+diff -u -r1.301 -r1.302
+--- src/gdb/arm-tdep.c	2010/03/24 20:23:13	1.301
++++ src/gdb/arm-tdep.c	2010/03/31 22:10:07	1.302
+@@ -2959,19 +2959,29 @@
+       else if ((inst1 & 0xfff0) == 0xe8d0 && (inst2 & 0xfff0) == 0xf000)
+ 	{
+ 	  /* TBB.  */
+-	  CORE_ADDR table, offset, length;
++	  CORE_ADDR tbl_reg, table, offset, length;
++
++	  tbl_reg = bits (inst1, 0, 3);
++	  if (tbl_reg == 0x0f)
++	    table = pc + 4;  /* Regcache copy of PC isn't right yet.  */
++	  else
++	    table = get_frame_register_unsigned (frame, tbl_reg);
+ 
+-	  table = get_frame_register_unsigned (frame, bits (inst1, 0, 3));
+ 	  offset = get_frame_register_unsigned (frame, bits (inst2, 0, 3));
+ 	  length = 2 * get_frame_memory_unsigned (frame, table + offset, 1);
+ 	  nextpc = pc_val + length;
+ 	}
+-      else if ((inst1 & 0xfff0) == 0xe8d0 && (inst2 & 0xfff0) == 0xf000)
++      else if ((inst1 & 0xfff0) == 0xe8d0 && (inst2 & 0xfff0) == 0xf010)
+ 	{
+ 	  /* TBH.  */
+-	  CORE_ADDR table, offset, length;
++	  CORE_ADDR tbl_reg, table, offset, length;
++
++	  tbl_reg = bits (inst1, 0, 3);
++	  if (tbl_reg == 0x0f)
++	    table = pc + 4;  /* Regcache copy of PC isn't right yet.  */
++	  else
++	    table = get_frame_register_unsigned (frame, tbl_reg);
+ 
+-	  table = get_frame_register_unsigned (frame, bits (inst1, 0, 3));
+ 	  offset = 2 * get_frame_register_unsigned (frame, bits (inst2, 0, 3));
+ 	  length = 2 * get_frame_memory_unsigned (frame, table + offset, 2);
+ 	  nextpc = pc_val + length;

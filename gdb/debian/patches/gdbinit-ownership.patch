@@ -1,0 +1,114 @@
+This patch was not popular upstream; there was no fundamental objection, but
+several problems with the implementation.  It needs to be revisited.
+
+---
+ gdb/cli/cli-cmds.c |   44 ++++++++++++++++++++++++++++++++++++++++----
+ gdb/main.c         |    4 ++--
+ 2 files changed, 42 insertions(+), 6 deletions(-)
+
+Index: gdb-7.1/gdb/cli/cli-cmds.c
+===================================================================
+--- gdb-7.1.orig/gdb/cli/cli-cmds.c
++++ gdb-7.1/gdb/cli/cli-cmds.c
+@@ -54,6 +54,8 @@ extern void disconnect_or_stop_tracing (
+ #include "tui/tui.h"		/* For tui_active et.al.   */
+ #endif
+ 
++#include "gdb_stat.h"
++
+ #include <fcntl.h>
+ 
+ /* Prototypes for local command functions */
+@@ -496,7 +498,7 @@ find_and_open_script (int from_tty, char
+ 
+   if (fd == -1)
+     {
+-      if (from_tty)
++      if (from_tty > 0)
+ 	perror_with_name (file);
+       else
+ 	{
+@@ -506,6 +508,39 @@ find_and_open_script (int from_tty, char
+     }
+ 
+   *streamp = fdopen (fd, FOPEN_RT);
++
++  if (*streamp == NULL)
++    {
++      if (from_tty)
++	perror_with_name (file);
++      else
++	{
++	  do_cleanups (old_cleanups);
++	  return 0;
++	}
++    }
++
++#ifdef HAVE_GETUID
++  if (from_tty == -1)
++    {
++      struct stat statbuf;
++      if (fstat (fd, &statbuf) < 0)
++	{
++	  perror_with_name (file);
++	  fclose (*streamp);
++	  do_cleanups (old_cleanups);
++	  return 0;
++	}
++      if (statbuf.st_uid != getuid () || (statbuf.st_mode & S_IWOTH))
++	{
++	  warning ("not using untrusted file \"%s\"", file);
++	  fclose (*streamp);
++	  do_cleanups (old_cleanups);
++	  return 0;
++	}
++    }
++#endif
++
+   *filep = file;
+   *cleanupp = old_cleanups;
+ 
+@@ -519,9 +554,7 @@ source_script (char *file, int from_tty)
+   struct cleanup *old_cleanups;
+ 
+   if (file == NULL || *file == 0)
+-    {
+-      error (_("source command requires file name of file to source."));
+-    }
++    error (_("source command requires file name of file to source."));
+ 
+   if (!find_and_open_script (from_tty, &file, &stream, &old_cleanups))
+     return;
+@@ -1305,6 +1338,10 @@ The max call depth for user-defined comm
+ }
+ 
+ 
++/* Load a GDB command file whose name is given in ARGS.  FROM_TTY may
++   be -1, in which case we are loading a gdbinit file; in that case,
++   be paranoid about unsafe files.  */
++
+ void
+ init_cli_cmds (void)
+ {
+Index: gdb-7.1/gdb/main.c
+===================================================================
+--- gdb-7.1.orig/gdb/main.c
++++ gdb-7.1/gdb/main.c
+@@ -784,7 +784,7 @@ Excess command line arguments ignored. (
+      debugging or what directory you are in.  */
+ 
+   if (home_gdbinit && !inhibit_gdbinit)
+-    catch_command_errors (source_script, home_gdbinit, 0, RETURN_MASK_ALL);
++    catch_command_errors (source_script, home_gdbinit, -1, RETURN_MASK_ALL);
+ 
+   /* Now perform all the actions indicated by the arguments.  */
+   if (cdarg != NULL)
+@@ -853,7 +853,7 @@ Can't attach to process and specify a co
+   /* Read the .gdbinit file in the current directory, *if* it isn't
+      the same as the $HOME/.gdbinit file (it should exist, also).  */
+   if (local_gdbinit && !inhibit_gdbinit)
+-    catch_command_errors (source_script, local_gdbinit, 0, RETURN_MASK_ALL);
++    catch_command_errors (source_script, local_gdbinit, -1, RETURN_MASK_ALL);
+ 
+   for (i = 0; i < ncmd; i++)
+     {

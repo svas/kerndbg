@@ -1,0 +1,13 @@
+Index: gdb-7.0.90.20100309/gdb/remote.c
+===================================================================
+--- gdb-7.0.90.20100309.orig/gdb/remote.c	2010-03-07 06:39:53.000000000 -0800
++++ gdb-7.0.90.20100309/gdb/remote.c	2010-03-09 11:56:21.668532803 -0800
+@@ -7647,7 +7647,7 @@
+       do_cleanups (old_chain);
+     }
+   if (mismatched > 0)
+-    warning (_("One or more sections of the remote executable does not match\n\
++    warning (_("One or more sections of the remote executable do not match\n\
+ the loaded file\n"));
+   if (args && !matched)
+     printf_filtered (_("No loaded section named '%s'.\n"), args);
