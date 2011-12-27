@@ -40,7 +40,7 @@ PATH: /usr/games
 ## Core tests. ##
 ## ----------- ##
 
-configure:2175: creating cache ./config.cache
+configure:2167: loading cache ./config.cache
 configure:2280: checking build system type
 configure:2294: result: i686-pc-linux-gnu
 configure:2314: checking host system type
@@ -86,24 +86,14 @@ configure:2856: gcc -o conftest -g -O2    conftest.c  >&5
 configure:2860: $? = 0
 configure:2882: result: 
 configure:2888: checking for suffix of object files
-configure:2910: gcc -c -g -O2  conftest.c >&5
-configure:2914: $? = 0
 configure:2935: result: o
 configure:2939: checking whether we are using the GNU C compiler
-configure:2958: gcc -c -g -O2  conftest.c >&5
-configure:2958: $? = 0
 configure:2967: result: yes
 configure:2976: checking whether gcc accepts -g
-configure:2996: gcc -c -g  conftest.c >&5
-configure:2996: $? = 0
 configure:3037: result: yes
 configure:3054: checking for gcc option to accept ISO C89
-configure:3118: gcc  -c -g -O2  conftest.c >&5
-configure:3118: $? = 0
 configure:3131: result: none needed
 configure:3152: checking for library containing strerror
-configure:3183: gcc -o conftest -g -O2    conftest.c  >&5
-configure:3183: $? = 0
 configure:3200: result: none required
 configure:3230: checking for a BSD-compatible install
 configure:3298: result: /usr/bin/install -c
@@ -150,23 +140,6 @@ configure:4308: result: yes
 configure:4325: checking for gcc option to accept ISO C89
 configure:4402: result: none needed
 configure:4427: checking how to run the C preprocessor
-configure:4458: gcc -E  conftest.c
-configure:4458: $? = 0
-configure:4472: gcc -E  conftest.c
-conftest.c:11:28: error: ac_nonexistent.h: No such file or directory
-configure:4472: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME ""
-| #define PACKAGE_TARNAME ""
-| #define PACKAGE_VERSION ""
-| #define PACKAGE_STRING ""
-| #define PACKAGE_BUGREPORT ""
-| #define PACKAGE_URL ""
-| #define PACKAGE "opcodes"
-| #define VERSION "2.20.51"
-| /* end confdefs.h.  */
-| #include <ac_nonexistent.h>
 configure:4497: result: gcc -E
 configure:4517: gcc -E  conftest.c
 configure:4517: $? = 0
@@ -190,141 +163,28 @@ configure:4618: result: /bin/grep
 configure:4623: checking for egrep
 configure:4685: result: /bin/grep -E
 configure:4690: checking for ANSI C header files
-configure:4710: gcc -c -g -O2  conftest.c >&5
-configure:4710: $? = 0
-configure:4783: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4783: $? = 0
-configure:4783: ./conftest
-configure:4783: $? = 0
 configure:4794: result: yes
 configure:4807: checking for sys/types.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for sys/stat.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for stdlib.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for string.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for memory.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for strings.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for inttypes.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for stdint.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
 configure:4807: checking for unistd.h
-configure:4807: gcc -c -g -O2  conftest.c >&5
-configure:4807: $? = 0
 configure:4807: result: yes
-configure:4821: checking minix/config.h usability
-configure:4821: gcc -c -g -O2  conftest.c >&5
-conftest.c:54:26: error: minix/config.h: No such file or directory
-configure:4821: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME ""
-| #define PACKAGE_TARNAME ""
-| #define PACKAGE_VERSION ""
-| #define PACKAGE_STRING ""
-| #define PACKAGE_BUGREPORT ""
-| #define PACKAGE_URL ""
-| #define PACKAGE "opcodes"
-| #define VERSION "2.20.51"
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| #include <minix/config.h>
-configure:4821: result: no
-configure:4821: checking minix/config.h presence
-configure:4821: gcc -E  conftest.c
-conftest.c:21:26: error: minix/config.h: No such file or directory
-configure:4821: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME ""
-| #define PACKAGE_TARNAME ""
-| #define PACKAGE_VERSION ""
-| #define PACKAGE_STRING ""
-| #define PACKAGE_BUGREPORT ""
-| #define PACKAGE_URL ""
-| #define PACKAGE "opcodes"
-| #define VERSION "2.20.51"
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| /* end confdefs.h.  */
-| #include <minix/config.h>
-configure:4821: result: no
 configure:4821: checking for minix/config.h
 configure:4821: result: no
 configure:4842: checking whether it is safe to define __EXTENSIONS__
-configure:4860: gcc -c -g -O2  conftest.c >&5
-configure:4860: $? = 0
 configure:4867: result: yes
 configure:4887: checking for i686-pc-linux-gnu-ar
 configure:4914: result: ar
@@ -343,10 +203,6 @@ configure:5463: result: yes
 configure:5475: checking for BSD- or MS-compatible name lister (nm)
 configure:5524: result: nm
 configure:5654: checking the name lister (nm) interface
-configure:5661: gcc -c -g -O2  conftest.c >&5
-configure:5664: nm "conftest.o"
-configure:5667: output
-00000000 B some_variable
 configure:5674: result: BSD nm
 configure:5677: checking whether ln -s works
 configure:5681: result: yes
@@ -367,48 +223,30 @@ configure:6269: result: ar
 configure:6347: checking for i686-pc-linux-gnu-strip
 configure:6377: result: no
 configure:6387: checking for strip
-configure:6403: found /usr/bin/strip
 configure:6414: result: strip
 configure:6446: checking for i686-pc-linux-gnu-ranlib
 configure:6473: result: ranlib
 configure:6615: checking command to parse nm output from gcc object
-configure:6733: gcc -c -g -O2  conftest.c >&5
-configure:6736: $? = 0
-configure:6740: nm conftest.o \| sed -n -e 's/^.*[ ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[ ][ ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' \> conftest.nm
-configure:6743: $? = 0
-configure:6797: gcc -o conftest -g -O2    conftest.c conftstm.o >&5
-configure:6800: $? = 0
 configure:6838: result: ok
 configure:7673: checking for dlfcn.h
-configure:7673: gcc -c -g -O2  conftest.c >&5
-configure:7673: $? = 0
 configure:7673: result: yes
 configure:7830: checking for objdir
 configure:7845: result: .libs
 configure:8116: checking if gcc supports -fno-rtti -fno-exceptions
-configure:8134: gcc -c -g -O2  -fno-rtti -fno-exceptions conftest.c >&5
-cc1: warning: command line option "-fno-rtti" is valid for C++/ObjC++ but not for C
-configure:8138: $? = 0
 configure:8151: result: no
 configure:8171: checking for gcc option to produce PIC
 configure:8456: result: -fPIC -DPIC
 configure:8468: checking if gcc PIC flag -fPIC -DPIC works
-configure:8486: gcc -c -g -O2  -fPIC -DPIC -DPIC conftest.c >&5
-configure:8490: $? = 0
 configure:8503: result: yes
 configure:8527: checking if gcc static flag -static works
 configure:8555: result: yes
 configure:8570: checking if gcc supports -c -o file.o
-configure:8591: gcc -c -g -O2  -o out/conftest2.o conftest.c >&5
-configure:8595: $? = 0
 configure:8617: result: yes
 configure:8625: checking if gcc supports -c -o file.o
 configure:8672: result: yes
 configure:8705: checking whether the gcc linker (ld) supports shared libraries
 configure:9780: result: yes
 configure:10025: checking dynamic linker characteristics
-configure:10480: gcc -o conftest -g -O2    -Wl,-rpath -Wl,/foo conftest.c  >&5
-configure:10480: $? = 0
 configure:10702: result: GNU/Linux ld.so
 configure:10809: checking how to hardcode library paths into programs
 configure:10834: result: immediate
@@ -444,32 +282,16 @@ configure:12071: checking for strings.h
 configure:12071: result: yes
 configure:12071: checking for stdlib.h
 configure:12071: result: yes
-configure:12071: checking limits.h usability
-configure:12071: gcc -c -g -O2  conftest.c >&5
-configure:12071: $? = 0
-configure:12071: result: yes
-configure:12071: checking limits.h presence
-configure:12071: gcc -E  conftest.c
-configure:12071: $? = 0
-configure:12071: result: yes
 configure:12071: checking for limits.h
 configure:12071: result: yes
 configure:12083: checking whether basename is declared
-configure:12083: gcc -c -g -O2  conftest.c >&5
-configure:12083: $? = 0
 configure:12083: result: yes
 configure:12093: checking whether stpcpy is declared
-configure:12093: gcc -c -g -O2  conftest.c >&5
-configure:12093: $? = 0
 configure:12093: result: yes
 configure:12135: checking linker --as-needed support
 configure:12146: result: yes
 configure:12237: checking for cos in -lm
-configure:12262: gcc -o conftest -g -O2    conftest.c -lm   >&5
-conftest.c:42: warning: conflicting types for built-in function 'cos'
-configure:12262: $? = 0
 configure:12271: result: yes
-configure:12593: updating cache ./config.cache
 configure:12658: creating ./config.status
 
 ## ---------------------- ##
@@ -490,6 +312,7 @@ on ubuntu
 config.status:1127: creating Makefile
 config.status:1127: creating po/Makefile.in
 config.status:1127: creating config.h
+config.status:1299: config.h is unchanged
 config.status:1347: executing depfiles commands
 config.status:1347: executing libtool commands
 config.status:1347: executing default-1 commands

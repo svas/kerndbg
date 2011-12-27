@@ -40,7 +40,7 @@ PATH: /usr/games
 ## Core tests. ##
 ## ----------- ##
 
-configure:1685: creating cache ./config.cache
+configure:1677: loading cache ./config.cache
 configure:1770: checking for i686-pc-linux-gnu-gcc
 configure:1797: result: gcc
 configure:2066: checking for C compiler version
@@ -80,20 +80,12 @@ configure:2232: gcc -o conftest -g -O2    conftest.c  >&5
 configure:2236: $? = 0
 configure:2258: result: 
 configure:2264: checking for suffix of object files
-configure:2286: gcc -c -g -O2  conftest.c >&5
-configure:2290: $? = 0
 configure:2311: result: o
 configure:2315: checking whether we are using the GNU C compiler
-configure:2334: gcc -c -g -O2  conftest.c >&5
-configure:2334: $? = 0
 configure:2343: result: yes
 configure:2352: checking whether gcc accepts -g
-configure:2372: gcc -c -g  conftest.c >&5
-configure:2372: $? = 0
 configure:2413: result: yes
 configure:2430: checking for gcc option to accept ISO C89
-configure:2494: gcc  -c -g -O2  conftest.c >&5
-configure:2494: $? = 0
 configure:2507: result: none needed
 configure:2564: checking for a BSD-compatible install
 configure:2632: result: /usr/bin/install -c
@@ -139,7 +131,6 @@ configure:3392: checking for gcc option to accept ISO C89
 configure:3469: result: none needed
 configure:3496: checking for i686-pc-linux-gnu-ranlib
 configure:3523: result: ranlib
-configure:3819: updating cache ./config.cache
 configure:3892: creating ./config.status
 
 ## ---------------------- ##

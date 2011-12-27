@@ -40,7 +40,7 @@ PATH: /usr/games
 ## Core tests. ##
 ## ----------- ##
 
-configure:2108: creating cache ./config.cache
+configure:2100: loading cache ./config.cache
 configure:2220: checking build system type
 configure:2234: result: i686-pc-linux-gnu
 configure:2254: checking host system type
@@ -86,37 +86,14 @@ configure:2868: gcc -o conftest -g -O2    conftest.c  >&5
 configure:2872: $? = 0
 configure:2894: result: 
 configure:2900: checking for suffix of object files
-configure:2922: gcc -c -g -O2  conftest.c >&5
-configure:2926: $? = 0
 configure:2947: result: o
 configure:2951: checking whether we are using the GNU C compiler
-configure:2970: gcc -c -g -O2  conftest.c >&5
-configure:2970: $? = 0
 configure:2979: result: yes
 configure:2988: checking whether gcc accepts -g
-configure:3008: gcc -c -g  conftest.c >&5
-configure:3008: $? = 0
 configure:3049: result: yes
 configure:3066: checking for gcc option to accept ISO C89
-configure:3130: gcc  -c -g -O2  conftest.c >&5
-configure:3130: $? = 0
 configure:3143: result: none needed
 configure:3169: checking how to run the C preprocessor
-configure:3200: gcc -E  conftest.c
-configure:3200: $? = 0
-configure:3214: gcc -E  conftest.c
-conftest.c:9:28: error: ac_nonexistent.h: No such file or directory
-configure:3214: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| /* end confdefs.h.  */
-| #include <ac_nonexistent.h>
 configure:3239: result: gcc -E
 configure:3259: gcc -E  conftest.c
 configure:3259: $? = 0
@@ -138,137 +115,28 @@ configure:3360: result: /bin/grep
 configure:3365: checking for egrep
 configure:3427: result: /bin/grep -E
 configure:3432: checking for ANSI C header files
-configure:3452: gcc -c -g -O2  conftest.c >&5
-configure:3452: $? = 0
-configure:3525: gcc -o conftest -g -O2    conftest.c  >&5
-configure:3525: $? = 0
-configure:3525: ./conftest
-configure:3525: $? = 0
 configure:3536: result: yes
 configure:3549: checking for sys/types.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for sys/stat.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for stdlib.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for string.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for memory.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for strings.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for inttypes.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for stdint.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
 configure:3549: checking for unistd.h
-configure:3549: gcc -c -g -O2  conftest.c >&5
-configure:3549: $? = 0
 configure:3549: result: yes
-configure:3563: checking minix/config.h usability
-configure:3563: gcc -c -g -O2  conftest.c >&5
-conftest.c:52:26: error: minix/config.h: No such file or directory
-configure:3563: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| #include <minix/config.h>
-configure:3563: result: no
-configure:3563: checking minix/config.h presence
-configure:3563: gcc -E  conftest.c
-conftest.c:19:26: error: minix/config.h: No such file or directory
-configure:3563: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| /* end confdefs.h.  */
-| #include <minix/config.h>
-configure:3563: result: no
 configure:3563: checking for minix/config.h
 configure:3563: result: no
 configure:3584: checking whether it is safe to define __EXTENSIONS__
-configure:3602: gcc -c -g -O2  conftest.c >&5
-configure:3602: $? = 0
 configure:3609: result: yes
 configure:3662: checking whether gcc needs -traditional
 configure:3696: result: no
@@ -279,1210 +147,110 @@ configure:3826: result: ar
 configure:3838: checking for i686-pc-linux-gnu-ranlib
 configure:3865: result: ranlib
 configure:3931: checking for an ANSI C-conforming const
-configure:3996: gcc -c -g -O2  conftest.c >&5
-configure:3996: $? = 0
 configure:4003: result: yes
 configure:4011: checking for function prototypes
 configure:4014: result: yes
 configure:4027: checking whether char is unsigned
-configure:4045: gcc -c -g -O2  conftest.c >&5
-configure:4045: $? = 0
 configure:4052: result: no
 configure:4060: checking return type of signal handlers
-configure:4078: gcc -c -g -O2  conftest.c >&5
-conftest.c: In function 'main':
-conftest.c:32: error: void value not ignored as it ought to be
-configure:4078: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| /* end confdefs.h.  */
-| #include <sys/types.h>
-| #include <signal.h>
-| 
-| int
-| main ()
-| {
-| return *(signal (0, 0)) (0) == 1;
-|   ;
-|   return 0;
-| }
 configure:4085: result: void
 configure:4094: checking for size_t
-configure:4094: gcc -c -g -O2  conftest.c >&5
-configure:4094: $? = 0
-configure:4094: gcc -c -g -O2  conftest.c >&5
-conftest.c: In function 'main':
-conftest.c:63: error: expected expression before ')' token
-configure:4094: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| int
-| main ()
-| {
-| if (sizeof ((size_t)))
-| 	    return 0;
-|   ;
-|   return 0;
-| }
 configure:4094: result: yes
 configure:4105: checking for ssize_t
-configure:4105: gcc -c -g -O2  conftest.c >&5
-configure:4105: $? = 0
-configure:4105: gcc -c -g -O2  conftest.c >&5
-conftest.c: In function 'main':
-conftest.c:63: error: expected expression before ')' token
-configure:4105: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| int
-| main ()
-| {
-| if (sizeof ((ssize_t)))
-| 	    return 0;
-|   ;
-|   return 0;
-| }
 configure:4105: result: yes
 configure:4117: checking for ANSI C header files
 configure:4221: result: yes
 configure:4230: checking whether stat file-mode macros are broken
-configure:4257: gcc -c -g -O2  conftest.c >&5
-configure:4257: $? = 0
 configure:4264: result: no
 configure:4275: checking for dirent.h that defines DIR
-configure:4294: gcc -c -g -O2  conftest.c >&5
-configure:4294: $? = 0
 configure:4302: result: yes
 configure:4316: checking for library containing opendir
-configure:4347: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4347: $? = 0
 configure:4364: result: none required
 configure:4435: checking for fcntl
-configure:4435: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4435: $? = 0
 configure:4435: result: yes
 configure:4435: checking for kill
-configure:4435: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4435: $? = 0
 configure:4435: result: yes
 configure:4435: checking for lstat
-configure:4435: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4435: $? = 0
 configure:4435: result: yes
 configure:4449: checking for memmove
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:55: warning: conflicting types for built-in function 'memmove'
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for putenv
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for select
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for setenv
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for setlocale
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for strcasecmp
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:60: warning: conflicting types for built-in function 'strcasecmp'
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for strpbrk
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:61: warning: conflicting types for built-in function 'strpbrk'
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for tcgetattr
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4449: checking for vsnprintf
-configure:4449: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:63: warning: conflicting types for built-in function 'vsnprintf'
-configure:4449: $? = 0
 configure:4449: result: yes
 configure:4462: checking for isascii
-configure:4462: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:64: warning: conflicting types for built-in function 'isascii'
-configure:4462: $? = 0
 configure:4462: result: yes
 configure:4462: checking for isxdigit
-configure:4462: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c:65: warning: conflicting types for built-in function 'isxdigit'
-configure:4462: $? = 0
 configure:4462: result: yes
 configure:4475: checking for getpwent
-configure:4475: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4475: $? = 0
 configure:4475: result: yes
 configure:4475: checking for getpwnam
-configure:4475: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4475: $? = 0
 configure:4475: result: yes
 configure:4475: checking for getpwuid
-configure:4475: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4475: $? = 0
 configure:4475: result: yes
 configure:4486: checking for working strcoll
-configure:4507: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4507: $? = 0
-configure:4507: ./conftest
-configure:4507: $? = 0
 configure:4517: result: yes
-configure:4530: checking fcntl.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking fcntl.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for fcntl.h
 configure:4530: result: yes
 configure:4530: checking for unistd.h
 configure:4530: result: yes
 configure:4530: checking for stdlib.h
 configure:4530: result: yes
-configure:4530: checking varargs.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-In file included from conftest.c:83:
-/usr/lib/gcc/i486-linux-gnu/4.4.3/include/varargs.h:4:2: error: #error "GCC no longer implements <varargs.h>."
-/usr/lib/gcc/i486-linux-gnu/4.4.3/include/varargs.h:5:2: error: #error "Revise your code to use <stdarg.h>."
-configure:4530: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| #include <varargs.h>
-configure:4530: result: no
-configure:4530: checking varargs.h presence
-configure:4530: gcc -E  conftest.c
-In file included from conftest.c:50:
-/usr/lib/gcc/i486-linux-gnu/4.4.3/include/varargs.h:4:2: error: #error "GCC no longer implements <varargs.h>."
-/usr/lib/gcc/i486-linux-gnu/4.4.3/include/varargs.h:5:2: error: #error "Revise your code to use <stdarg.h>."
-configure:4530: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| /* end confdefs.h.  */
-| #include <varargs.h>
-configure:4530: result: no
 configure:4530: checking for varargs.h
 configure:4530: result: no
-configure:4530: checking stdarg.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking stdarg.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for stdarg.h
 configure:4530: result: yes
 configure:4530: checking for string.h
 configure:4530: result: yes
 configure:4530: checking for strings.h
 configure:4530: result: yes
-configure:4530: checking limits.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking limits.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for limits.h
 configure:4530: result: yes
-configure:4530: checking locale.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking locale.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for locale.h
-configure:4530: result: yes
-configure:4530: checking pwd.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking pwd.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
 configure:4530: result: yes
 configure:4530: checking for pwd.h
 configure:4530: result: yes
 configure:4530: checking for memory.h
 configure:4530: result: yes
-configure:4530: checking termcap.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking termcap.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for termcap.h
-configure:4530: result: yes
-configure:4530: checking termios.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking termios.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
 configure:4530: result: yes
 configure:4530: checking for termios.h
 configure:4530: result: yes
-configure:4530: checking termio.h usability
-configure:4530: gcc -c -g -O2  conftest.c >&5
-configure:4530: $? = 0
-configure:4530: result: yes
-configure:4530: checking termio.h presence
-configure:4530: gcc -E  conftest.c
-configure:4530: $? = 0
-configure:4530: result: yes
 configure:4530: checking for termio.h
 configure:4530: result: yes
-configure:4544: checking sys/pte.h usability
-configure:4544: gcc -c -g -O2  conftest.c >&5
-conftest.c:93:21: error: sys/pte.h: No such file or directory
-configure:4544: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| #include <sys/pte.h>
-configure:4544: result: no
-configure:4544: checking sys/pte.h presence
-configure:4544: gcc -E  conftest.c
-conftest.c:60:21: error: sys/pte.h: No such file or directory
-configure:4544: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| /* end confdefs.h.  */
-| #include <sys/pte.h>
-configure:4544: result: no
 configure:4544: checking for sys/pte.h
-configure:4544: result: no
-configure:4544: checking sys/stream.h usability
-configure:4544: gcc -c -g -O2  conftest.c >&5
-conftest.c:93:24: error: sys/stream.h: No such file or directory
-configure:4544: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| /* end confdefs.h.  */
-| #include <stdio.h>
-| #ifdef HAVE_SYS_TYPES_H
-| # include <sys/types.h>
-| #endif
-| #ifdef HAVE_SYS_STAT_H
-| # include <sys/stat.h>
-| #endif
-| #ifdef STDC_HEADERS
-| # include <stdlib.h>
-| # include <stddef.h>
-| #else
-| # ifdef HAVE_STDLIB_H
-| #  include <stdlib.h>
-| # endif
-| #endif
-| #ifdef HAVE_STRING_H
-| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
-| #  include <memory.h>
-| # endif
-| # include <string.h>
-| #endif
-| #ifdef HAVE_STRINGS_H
-| # include <strings.h>
-| #endif
-| #ifdef HAVE_INTTYPES_H
-| # include <inttypes.h>
-| #endif
-| #ifdef HAVE_STDINT_H
-| # include <stdint.h>
-| #endif
-| #ifdef HAVE_UNISTD_H
-| # include <unistd.h>
-| #endif
-| #include <sys/stream.h>
-configure:4544: result: no
-configure:4544: checking sys/stream.h presence
-configure:4544: gcc -E  conftest.c
-conftest.c:60:24: error: sys/stream.h: No such file or directory
-configure:4544: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| /* end confdefs.h.  */
-| #include <sys/stream.h>
 configure:4544: result: no
 configure:4544: checking for sys/stream.h
 configure:4544: result: no
-configure:4544: checking sys/select.h usability
-configure:4544: gcc -c -g -O2  conftest.c >&5
-configure:4544: $? = 0
-configure:4544: result: yes
-configure:4544: checking sys/select.h presence
-configure:4544: gcc -E  conftest.c
-configure:4544: $? = 0
-configure:4544: result: yes
 configure:4544: checking for sys/select.h
-configure:4544: result: yes
-configure:4544: checking sys/file.h usability
-configure:4544: gcc -c -g -O2  conftest.c >&5
-configure:4544: $? = 0
-configure:4544: result: yes
-configure:4544: checking sys/file.h presence
-configure:4544: gcc -E  conftest.c
-configure:4544: $? = 0
 configure:4544: result: yes
 configure:4544: checking for sys/file.h
 configure:4544: result: yes
 configure:4558: checking for sys/ptem.h
-configure:4558: gcc -c -g -O2  conftest.c >&5
-conftest.c:68:22: error: sys/ptem.h: No such file or directory
-configure:4558: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| /* end confdefs.h.  */
-| 
-| #if HAVE_SYS_STREAM_H
-| #  include <sys/stream.h>
-| #endif
-| 
-| 
-| #include <sys/ptem.h>
 configure:4558: result: no
 configure:4575: checking for type of signal functions
-configure:4598: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4598: $? = 0
 configure:4656: result: posix
 configure:4671: checking if signal handlers must be reinstalled when invoked
-configure:4729: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c: In function 'main':
-conftest.c:104: warning: incompatible implicit declaration of built-in function 'exit'
-configure:4729: $? = 0
-configure:4729: ./conftest
-configure:4729: $? = 0
 configure:4740: result: no
 configure:4749: checking for presence of POSIX-style sigsetjmp/siglongjmp
-configure:4801: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c: In function 'main':
-conftest.c:90: warning: incompatible implicit declaration of built-in function 'exit'
-configure:4801: $? = 0
-configure:4801: ./conftest
-configure:4801: $? = 0
 configure:4812: result: present
 configure:4819: checking for lstat
-configure:4838: gcc -o conftest -g -O2    conftest.c  >&5
-configure:4838: $? = 0
 configure:4846: result: yes
 configure:4854: checking whether or not strcoll and strcmp differ
-configure:4904: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c: In function 'main':
-conftest.c:98: warning: incompatible implicit declaration of built-in function 'exit'
-configure:4904: $? = 0
-configure:4904: ./conftest
-configure:4904: $? = 1
-configure: program exited with status 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| #define HAVE_POSIX_SIGNALS 1
-| #define HAVE_POSIX_SIGSETJMP 1
-| #define HAVE_LSTAT 1
-| /* end confdefs.h.  */
-| 
-| #include <stdio.h>
-| #if defined (HAVE_LOCALE_H)
-| #include <locale.h>
-| #endif
-| 
-| main(c, v)
-| int     c;
-| char    *v[];
-| {
-|         int     r1, r2;
-|         char    *deflocale, *defcoll;
-| 
-| #ifdef HAVE_SETLOCALE
-|         deflocale = setlocale(LC_ALL, "");
-| 	defcoll = setlocale(LC_COLLATE, "");
-| #endif
-| 
-| #ifdef HAVE_STRCOLL
-| 	/* These two values are taken from tests/glob-test. */
-|         r1 = strcoll("abd", "aXd");
-| #else
-| 	r1 = 0;
-| #endif
-|         r2 = strcmp("abd", "aXd");
-| 
-| 	/* These two should both be greater than 0.  It is permissible for
-| 	   a system to return different values, as long as the sign is the
-| 	   same. */
-| 
-|         /* Exit with 1 (failure) if these two values are both > 0, since
-| 	   this tests whether strcoll(3) is broken with respect to strcmp(3)
-| 	   in the default locale. */
-| 	exit (r1 > 0 && r2 > 0);
-| }
-| 
 configure:4915: result: no
 configure:4923: checking whether the ctype macros accept non-ascii characters
-configure:4968: gcc -o conftest -g -O2    conftest.c  >&5
-conftest.c: In function 'main':
-conftest.c:93: warning: incompatible implicit declaration of built-in function 'exit'
-configure:4968: $? = 0
-configure:4968: ./conftest
-configure:4968: $? = 1
-configure: program exited with status 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| #define HAVE_POSIX_SIGNALS 1
-| #define HAVE_POSIX_SIGSETJMP 1
-| #define HAVE_LSTAT 1
-| /* end confdefs.h.  */
-| 
-| #ifdef HAVE_LOCALE_H
-| #include <locale.h>
-| #endif
-| #include <stdio.h>
-| #include <ctype.h>
-| 
-| main(c, v)
-| int	c;
-| char	*v[];
-| {
-| 	char	*deflocale;
-| 	unsigned char x;
-| 	int	r1, r2;
-| 
-| #ifdef HAVE_SETLOCALE
-| 	/* We take a shot here.  If that locale is not known, try the
-| 	   system default.  We try this one because '\342' (226) is
-| 	   known to be a printable character in that locale. */
-| 	deflocale = setlocale(LC_ALL, "en_US.ISO8859-1");
-| 	if (deflocale == 0)
-| 		deflocale = setlocale(LC_ALL, "");
-| #endif
-| 
-| 	x = '\342';
-| 	r1 = isprint(x);
-| 	x -= 128;
-| 	r2 = isprint(x);
-| 	exit (r1 == 0 || r2 == 0);
-| }
-| 
 configure:4979: result: no
 configure:4987: checking whether getpw functions are declared in pwd.h
 configure:5012: result: yes
@@ -1491,384 +259,45 @@ configure:5043: result: no
 configure:5047: checking whether sys/ioctl.h defines TIOCGWINSZ
 configure:5070: result: yes
 configure:5081: checking whether signal handlers are of type void
-configure:5105: gcc -c -g -O2  conftest.c >&5
-configure:5105: $? = 0
 configure:5112: result: yes
 configure:5119: checking for TIOCSTAT in sys/ioctl.h
-configure:5136: gcc -c -g -O2  conftest.c >&5
-conftest.c: In function 'main':
-conftest.c:73: error: 'TIOCSTAT' undeclared (first use in this function)
-conftest.c:73: error: (Each undeclared identifier is reported only once
-conftest.c:73: error: for each function it appears in.)
-configure:5136: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| #define HAVE_POSIX_SIGNALS 1
-| #define HAVE_POSIX_SIGSETJMP 1
-| #define HAVE_LSTAT 1
-| #define HAVE_GETPW_DECLS 1
-| #define GWINSZ_IN_SYS_IOCTL 1
-| #define VOID_SIGHANDLER 1
-| /* end confdefs.h.  */
-| #include <sys/types.h>
-| #include <sys/ioctl.h>
-| int
-| main ()
-| {
-| int x = TIOCSTAT;
-|   ;
-|   return 0;
-| }
 configure:5144: result: no
 configure:5151: checking for FIONREAD in sys/ioctl.h
-configure:5168: gcc -c -g -O2  conftest.c >&5
-configure:5168: $? = 0
 configure:5176: result: yes
 configure:5183: checking for speed_t in sys/types.h
-configure:5199: gcc -c -g -O2  conftest.c >&5
-conftest.c: In function 'main':
-conftest.c:73: error: 'speed_t' undeclared (first use in this function)
-conftest.c:73: error: (Each undeclared identifier is reported only once
-conftest.c:73: error: for each function it appears in.)
-conftest.c:73: error: expected ';' before 'x'
-configure:5199: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| #define HAVE_POSIX_SIGNALS 1
-| #define HAVE_POSIX_SIGSETJMP 1
-| #define HAVE_LSTAT 1
-| #define HAVE_GETPW_DECLS 1
-| #define GWINSZ_IN_SYS_IOCTL 1
-| #define VOID_SIGHANDLER 1
-| #define FIONREAD_IN_SYS_IOCTL 1
-| /* end confdefs.h.  */
-| #include <sys/types.h>
-| int
-| main ()
-| {
-| speed_t x;
-|   ;
-|   return 0;
-| }
 configure:5207: result: no
 configure:5214: checking for struct winsize in sys/ioctl.h and termios.h
-configure:5231: gcc -c -g -O2  conftest.c >&5
-configure:5231: $? = 0
 configure:5258: result: sys/ioctl.h
 configure:5273: checking for struct dirent.d_ino
-configure:5311: gcc -c -g -O2  conftest.c >&5
-configure:5311: $? = 0
 configure:5319: result: yes
 configure:5327: checking for struct dirent.d_fileno
-configure:5365: gcc -c -g -O2  conftest.c >&5
-configure:5365: $? = 0
 configure:5373: result: yes
-configure:5395: checking for tgetent
-configure:5395: gcc -o conftest -g -O2    conftest.c  >&5
-/tmp/cckyTtyd.o: In function `main':
-/mnt/hgfs/prj/kern_dbg_info/gdb/readline/conftest.c:106: undefined reference to `tgetent'
-collect2: ld returned 1 exit status
-configure:5395: $? = 1
-configure: failed program was:
-| /* confdefs.h */
-| #define PACKAGE_NAME "readline"
-| #define PACKAGE_TARNAME "readline"
-| #define PACKAGE_VERSION "5.1-release"
-| #define PACKAGE_STRING "readline 5.1-release"
-| #define PACKAGE_BUGREPORT "bug-readline@gnu.org"
-| #define PACKAGE_URL ""
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define __EXTENSIONS__ 1
-| #define _ALL_SOURCE 1
-| #define _GNU_SOURCE 1
-| #define _POSIX_PTHREAD_SEMANTICS 1
-| #define _TANDEM_SOURCE 1
-| #define PROTOTYPES 1
-| #define __PROTOTYPES 1
-| #define RETSIGTYPE void
-| #define STDC_HEADERS 1
-| #define HAVE_DIRENT_H 1
-| #define HAVE_FCNTL 1
-| #define HAVE_KILL 1
-| #define HAVE_LSTAT 1
-| #define HAVE_MEMMOVE 1
-| #define HAVE_PUTENV 1
-| #define HAVE_SELECT 1
-| #define HAVE_SETENV 1
-| #define HAVE_SETLOCALE 1
-| #define HAVE_STRCASECMP 1
-| #define HAVE_STRPBRK 1
-| #define HAVE_TCGETATTR 1
-| #define HAVE_VSNPRINTF 1
-| #define HAVE_ISASCII 1
-| #define HAVE_ISXDIGIT 1
-| #define HAVE_GETPWENT 1
-| #define HAVE_GETPWNAM 1
-| #define HAVE_GETPWUID 1
-| #define HAVE_STRCOLL 1
-| #define HAVE_FCNTL_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STDARG_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_LIMITS_H 1
-| #define HAVE_LOCALE_H 1
-| #define HAVE_PWD_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_TERMCAP_H 1
-| #define HAVE_TERMIOS_H 1
-| #define HAVE_TERMIO_H 1
-| #define HAVE_SYS_SELECT_H 1
-| #define HAVE_SYS_FILE_H 1
-| #define HAVE_POSIX_SIGNALS 1
-| #define HAVE_POSIX_SIGSETJMP 1
-| #define HAVE_LSTAT 1
-| #define HAVE_GETPW_DECLS 1
-| #define GWINSZ_IN_SYS_IOCTL 1
-| #define VOID_SIGHANDLER 1
-| #define FIONREAD_IN_SYS_IOCTL 1
-| #define STRUCT_WINSIZE_IN_SYS_IOCTL 1
-| #define HAVE_STRUCT_DIRENT_D_INO 1
-| #define HAVE_STRUCT_DIRENT_D_FILENO 1
-| /* end confdefs.h.  */
-| /* Define tgetent to an innocuous variant, in case <limits.h> declares tgetent.
-|    For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-| #define tgetent innocuous_tgetent
-| 
-| /* System header to define __stub macros and hopefully few prototypes,
-|     which can conflict with char tgetent (); below.
-|     Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-|     <limits.h> exists even on freestanding compilers.  */
-| 
-| #ifdef __STDC__
-| # include <limits.h>
-| #else
-| # include <assert.h>
-| #endif
-| 
-| #undef tgetent
-| 
-| /* Override any GCC internal prototype to avoid an error.
-|    Use char because int might match the return type of a GCC
-|    builtin and then its argument prototype would still apply.  */
-| #ifdef __cplusplus
-| extern "C"
-| #endif
-| char tgetent ();
-| /* The GNU C library defines this for functions which it implements
-|     to always fail with ENOSYS.  Some functions are actually named
-|     something starting with __ and the normal name is an alias.  */
-| #if defined __stub_tgetent || defined __stub___tgetent
-| choke me
-| #endif
-| 
-| int
-| main ()
-| {
-| return tgetent ();
-|   ;
-|   return 0;
-| }
-configure:5395: result: no
-configure:5399: checking for tgetent in -ltermcap
-configure:5424: gcc -o conftest -g -O2    conftest.c -ltermcap   >&5
-configure:5424: $? = 0
-configure:5433: result: yes
-configure:5569: checking which library has the termcap functions
+configure:5388: checking which library has the termcap functions
 configure:5572: result: using libtermcap
-configure:5606: checking wctype.h usability
-configure:5606: gcc -c -g -O2  conftest.c >&5
-configure:5606: $? = 0
-configure:5606: result: yes
-configure:5606: checking wctype.h presence
-configure:5606: gcc -E  conftest.c
-configure:5606: $? = 0
-configure:5606: result: yes
 configure:5606: checking for wctype.h
 configure:5606: result: yes
-configure:5618: checking wchar.h usability
-configure:5618: gcc -c -g -O2  conftest.c >&5
-configure:5618: $? = 0
-configure:5618: result: yes
-configure:5618: checking wchar.h presence
-configure:5618: gcc -E  conftest.c
-configure:5618: $? = 0
-configure:5618: result: yes
 configure:5618: checking for wchar.h
 configure:5618: result: yes
-configure:5630: checking langinfo.h usability
-configure:5630: gcc -c -g -O2  conftest.c >&5
-configure:5630: $? = 0
-configure:5630: result: yes
-configure:5630: checking langinfo.h presence
-configure:5630: gcc -E  conftest.c
-configure:5630: $? = 0
-configure:5630: result: yes
 configure:5630: checking for langinfo.h
 configure:5630: result: yes
 configure:5641: checking for mbsrtowcs
-configure:5641: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5641: $? = 0
 configure:5641: result: yes
 configure:5647: checking for mbrtowc
-configure:5647: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5647: $? = 0
 configure:5647: result: yes
 configure:5653: checking for mbrlen
-configure:5653: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5653: $? = 0
 configure:5653: result: yes
 configure:5659: checking for wctomb
-configure:5659: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5659: $? = 0
 configure:5659: result: yes
 configure:5665: checking for wcwidth
-configure:5665: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5665: $? = 0
 configure:5665: result: yes
 configure:5671: checking for wcsdup
-configure:5671: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5671: $? = 0
 configure:5671: result: yes
 configure:5685: checking for mbstate_t
-configure:5706: gcc -c -g -O2  conftest.c >&5
-configure:5706: $? = 0
 configure:5713: result: yes
 configure:5720: checking for nl_langinfo and CODESET
-configure:5736: gcc -o conftest -g -O2    conftest.c  >&5
-configure:5736: $? = 0
 configure:5744: result: yes
 configure:5768: checking configuration for building shared libraries
 configure:5792: result: supported
-configure:5920: updating cache ./config.cache
 configure:5957: creating ./config.status
 
 ## ---------------------- ##
@@ -1891,6 +320,7 @@ config.status:917: creating doc/Makefile
 config.status:917: creating examples/Makefile
 config.status:917: creating shlib/Makefile
 config.status:917: creating config.h
+config.status:1083: config.h is unchanged
 config.status:1097: executing default commands
 
 ## ---------------- ##

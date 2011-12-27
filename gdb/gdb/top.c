@@ -1261,6 +1261,8 @@ quit_force (char *args, int from_tty)
   catch_errors (quit_target, &qt,
 	        "Quitting: ", RETURN_MASK_ALL);
 
+  /* Close the lkgdb device */
+  close(dev_lkgdb_fd);
   exit (exit_code);
 }
 

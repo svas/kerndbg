@@ -141,6 +141,12 @@ typedef bfd_vma CORE_ADDR;
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #endif
 
+enum lkgdb_cmds {
+    STEPI,
+};
+
+extern int dev_lkgdb_fd;
+
 /* Check if a character is one of the commonly used C++ marker characters.  */
 extern int is_cplus_marker (int);
 

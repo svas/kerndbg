@@ -1,5 +1,5 @@
 #linux source directory
-SOURCE_DIR:=/mnt/hgfs/prj/shm_prj_git/linux-2.6.38.8
+SOURCE_DIR:=../../linux-2.6.38.8
 
 obj-m += lkgdb.o
 

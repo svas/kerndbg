@@ -158,37 +158,13 @@ configure:3775: checking for sys/procfs.h
 configure:3775: result: yes
 configure:3775: checking for thread_db.h
 configure:3775: result: yes
-configure:3775: checking linux/elf.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking linux/elf.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for linux/elf.h
 configure:3775: result: yes
 configure:3775: checking for stdlib.h
 configure:3775: result: yes
 configure:3775: checking for unistd.h
 configure:3775: result: yes
-configure:3775: checking errno.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking errno.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for errno.h
-configure:3775: result: yes
-configure:3775: checking fcntl.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking fcntl.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
 configure:3775: result: yes
 configure:3775: checking for fcntl.h
 configure:3775: result: yes
@@ -196,85 +172,31 @@ configure:3775: checking for signal.h
 configure:3775: result: yes
 configure:3775: checking for sys/file.h
 configure:3775: result: yes
-configure:3775: checking malloc.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking malloc.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for malloc.h
 configure:3775: result: yes
 configure:3775: checking for sys/ioctl.h
 configure:3775: result: yes
-configure:3775: checking netinet/in.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking netinet/in.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for netinet/in.h
-configure:3775: result: yes
-configure:3775: checking sys/socket.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking sys/socket.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
 configure:3775: result: yes
 configure:3775: checking for sys/socket.h
 configure:3775: result: yes
-configure:3775: checking netdb.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking netdb.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for netdb.h
 configure:3775: result: yes
-configure:3775: checking netinet/tcp.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking netinet/tcp.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
-configure:3775: result: yes
 configure:3775: checking for netinet/tcp.h
-configure:3775: result: yes
-configure:3775: checking arpa/inet.h usability
-configure:3775: gcc -c -g -O2  conftest.c >&5
-configure:3775: $? = 0
-configure:3775: result: yes
-configure:3775: checking arpa/inet.h presence
-configure:3775: gcc -E  conftest.c
-configure:3775: $? = 0
 configure:3775: result: yes
 configure:3775: checking for arpa/inet.h
 configure:3775: result: yes
 configure:3775: checking for sys/wait.h
 configure:3775: result: yes
 configure:3789: checking for pread
-configure:3789: gcc -o conftest -g -O2    conftest.c  >&5
-configure:3789: $? = 0
 configure:3789: result: yes
 configure:3789: checking for pwrite
-configure:3789: gcc -o conftest -g -O2    conftest.c  >&5
-configure:3789: $? = 0
 configure:3789: result: yes
 configure:3789: checking for pread64
 configure:3789: result: yes
 configure:3801: checking for memmem
 configure:3801: result: yes
 configure:3823: checking for dladdr
-configure:3823: gcc -o conftest -g -O2    conftest.c  -ldl >&5
-configure:3823: $? = 0
 configure:3823: result: yes
 configure:3835: checking for errno
 configure:3851: gcc -o conftest -g -O2    conftest.c  >&5
@@ -283,8 +205,6 @@ configure:3852: result: yes - in errno.h
 configure:3889: checking whether strerror is declared
 configure:3889: result: yes
 configure:3899: checking whether perror is declared
-configure:3899: gcc -c -g -O2  conftest.c >&5
-configure:3899: $? = 0
 configure:3899: result: yes
 configure:3909: checking whether memmem is declared
 configure:3909: result: yes
@@ -293,12 +213,8 @@ configure:3921: result: yes
 configure:3995: checking if building for x86-64
 configure:4020: result: no
 configure:4081: checking for PTRACE_GETREGS
-configure:4097: gcc -c -g -O2  conftest.c >&5
-configure:4097: $? = 0
 configure:4105: result: yes
 configure:4113: checking for PTRACE_GETFPXREGS
-configure:4129: gcc -c -g -O2  conftest.c >&5
-configure:4129: $? = 0
 configure:4137: result: yes
 configure:4147: checking for lwpid_t in sys/procfs.h
 configure:4179: result: yes
@@ -307,16 +223,11 @@ configure:4214: result: yes
 configure:4217: checking for prgregset_t in sys/procfs.h
 configure:4249: result: yes
 configure:4252: checking for elf_fpregset_t in sys/procfs.h
-configure:4270: gcc -c -g -O2  conftest.c >&5
-configure:4270: $? = 0
 configure:4284: result: yes
 configure:4308: gcc -o conftest -g -O2    -rdynamic conftest.c  >&5
 configure:4308: $? = 0
 configure:4320: checking for TD_VERSION
-configure:4336: gcc -c -g -O2  conftest.c >&5
-configure:4336: $? = 0
 configure:4343: result: yes
-configure:4455: updating cache .././config.cache
 configure:4492: creating ./config.status
 
 ## ---------------------- ##
@@ -336,6 +247,7 @@ on ubuntu
 
 config.status:876: creating Makefile
 config.status:876: creating config.h
+config.status:1042: config.h is unchanged
 config.status:1056: executing default commands
 
 ## ---------------- ##

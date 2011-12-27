@@ -12,18 +12,13 @@ i386-dis.lo: i386-dis.c sysdep.h config.h ../include/ansidecl.h \
  /usr/include/sys/select.h /usr/include/bits/select.h \
  /usr/include/bits/sigset.h /usr/include/bits/time.h \
  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
- /usr/include/alloca.h /usr/include/bits/stdlib.h /usr/include/string.h \
- /usr/include/bits/string.h /usr/include/bits/string2.h \
- /usr/include/bits/string3.h ../include/dis-asm.h /usr/include/stdio.h \
- /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/i486-linux-gnu/4.4.3/include/stdarg.h \
+ /usr/include/alloca.h /usr/include/string.h ../include/dis-asm.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/i486-linux-gnu/4.4.3/include/stdarg.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
- /usr/include/bits/stdio.h /usr/include/bits/stdio2.h ../bfd/bfd.h \
- ../include/symcat.h opintl.h /usr/include/libintl.h \
- /usr/include/locale.h /usr/include/bits/locale.h \
+ ../bfd/bfd.h ../include/symcat.h opintl.h /usr/include/libintl.h \
  ../include/opcode/i386.h ../include/libiberty.h ../include/ansidecl.h \
- /usr/include/setjmp.h /usr/include/bits/setjmp.h \
- /usr/include/bits/setjmp2.h
+ /usr/include/setjmp.h /usr/include/bits/setjmp.h
 
 sysdep.h:
 
@@ -81,15 +76,7 @@ config.h:
 
 /usr/include/alloca.h:
 
-/usr/include/bits/stdlib.h:
-
 /usr/include/string.h:
-
-/usr/include/bits/string.h:
-
-/usr/include/bits/string2.h:
-
-/usr/include/bits/string3.h:
 
 ../include/dis-asm.h:
 
@@ -107,10 +94,6 @@ config.h:
 
 /usr/include/bits/sys_errlist.h:
 
-/usr/include/bits/stdio.h:
-
-/usr/include/bits/stdio2.h:
-
 ../bfd/bfd.h:
 
 ../include/symcat.h:
@@ -118,10 +101,6 @@ config.h:
 opintl.h:
 
 /usr/include/libintl.h:
-
-/usr/include/locale.h:
-
-/usr/include/bits/locale.h:
 
 ../include/opcode/i386.h:
 
@@ -132,5 +111,3 @@ opintl.h:
 /usr/include/setjmp.h:
 
 /usr/include/bits/setjmp.h:
-
-/usr/include/bits/setjmp2.h:

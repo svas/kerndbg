@@ -16,7 +16,7 @@
 
 /* For each probe you need to allocate a kprobe structure */
 static struct kprobe kp = {
-	.symbol_name	= "do_fork",
+	.symbol_name	= "test_kern_func",
 };
 
 /* kprobe pre_handler: called just before the probed instruction is executed */
@@ -39,6 +39,9 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 #endif
 
 	/* A dump_stack() here will give a stack backtrace */
+    dump_stack();
+    set_current_state(TASK_INTERRUPTIBLE);
+    schedule();
 	return 0;
 }
 

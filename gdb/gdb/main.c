@@ -42,6 +42,8 @@
 
 #include "source.h"
 
+extern int dev_lkgdb_fd;
+
 /* If nonzero, display time usage both at startup and for each command.  */
 
 int display_time;
@@ -910,10 +912,14 @@ Can't attach to process and specify a core file at the same time."));
 int
 gdb_main (struct captured_main_args *args)
 {
-  use_windows = args->use_windows;
+    /* Initialize lkgdb */
+    lkgdb_init();
+    use_windows = args->use_windows;
   catch_errors (captured_main, args, "", RETURN_MASK_ALL);
   /* The only way to end up here is by an error (normal exit is
      handled by quit_force()), hence always return an error status.  */
+  /* Close the lkgdb device */
+  close(dev_lkgdb_fd);
   return 1;
 }
 
